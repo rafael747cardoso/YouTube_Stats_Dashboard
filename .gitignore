@@ -1,0 +1,12 @@
+venv
+*.pyc
+.DS_Store
+.env
+.idea
+.ipynb_checkpoints
+.vscode
+mockup.drawio
+mockup.pdf
+todo.txt
+
+
