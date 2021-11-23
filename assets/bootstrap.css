@@ -11419,114 +11419,28 @@ a.text-dark:hover, a.text-dark:focus {
     padding-right: 1.7rem;
 }
 
-/**********************************************************************************************************************/
-/************************************************* My classes *********************************************************/
-/**********************************************************************************************************************/
 
-/************************************************** Main Div */
 
-.main-div {
-    padding-left: 40px !important;
-    padding-right: 40px !important;    
+/*********************************************************************************************************************/
+/************************************************* My classes ********************************************************/
+/*********************************************************************************************************************/
+
+
+
+/************************************************** Main Div *********************************************************/
+
+.div-main {
 }
 
-/************************************************** Cards */
+/************************************************** Cards ************************************************************/
 
-.col-card {
-    padding: 0px;
-}
 
-.topairplane-card {
-    border-radius: 15px;
-    text-align: center;
-}
 
-.topairplane-card-title {
-    font-size: 25px;
-    font-weight: 600;
-    margin-bottom: 25px;
-}
+/************************************************** Plots ************************************************************/
 
-.topairplane-card-subtitle {
-    font-size: 30px;
-    font-weight: 800;    
-}
 
-#fastest-card {
-    background-color: #038ef8;
-    margin: 0 3vmax;
-}
+/************************************************** Table ************************************************************/
 
-#heaviest-card {
-    background-color: #853dc1;
-    margin: 0 3vmax;
-}
-
-#longest-card {
-    background-color: #1baa5f;
-    margin: 0 3vmax;
-}
-
-#most_potent-card {
-    background-color: #e45e35;
-    margin: 0 3vmax;
-}
-
-/************************************************** Plots */
-
-.plot-card {
-    border-radius: 15px;
-    text-align: center;
-    border: 1px solid gray;
-    padding: 20px
-}
-
-.Select-menu-outer {
-    color: #2c85ff !important;
-}
-
-/************************************************** Table */
-
-.table-card {
-    text-align: center;
-    padding: 20px
-}
-
-.table-data {
-    margin: 25px 0px;
-}
-
-.column-header-name {
-    padding-left: 10px;
-    padding-right: 10px;
-    font-weight: 800;
-}
-
-.dash-cell.column-0,
-.dash-cell.column-1 {
-    padding-right: 20px !important;
-}
-
-/************************************************** Models */
-
-.plot-model-card {
-    border-radius: 15px;
-    text-align: center;
-    border: 1px solid gray;
-    padding: 0px
-}
-
-.dash-graph{
-    padding-bottom: 5px !important;
-}
-
-.title-slider {
-    text-align: left;
-}
-
-.rc-slider-mark-text {
-	font-size: 16px;
-}
 
 
 

@@ -5,6 +5,7 @@
 # Paths:
 path_data = "data/"
 path_assets = "assets/"
+path_figs = "figs/"
 
 # Packages:
 import numpy as np
@@ -15,19 +16,19 @@ import plotly.express as px
 import plotly.graph_objects as go
 import operator
 import dash
-import dash_table
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dash_table
+from dash import dcc
+from dash import html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-from funcs.ui_table import tab_table
-
+import base64
 
 
 # Display options:
 pd.set_option("display.width", 1200)
 pd.set_option("display.max_columns", 300)
 pd.set_option("display.max_rows", 300)
+
 
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -71,7 +72,7 @@ operations_opts = [
     {"label": "<", "value": "<"},
     {"label": "<=", "value": "<="}
 ]
-ops = {
+operations_funcs = {
     ">=": operator.ge,
     ">": operator.gt,
     "==": operator.eq,
@@ -86,8 +87,10 @@ ops = {
 #----------------------------------------------------------------------------------------------------------------------
 ################################################# Initialize ##########################################################
 
-app = dash.Dash(name = __name__,
-                external_stylesheets = ["assets/bootstrap.css"])
+app = dash.Dash(
+    name = __name__,
+    external_stylesheets = ["assets/bootstrap.css"]
+)
 server = app.server
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -97,78 +100,13 @@ server = app.server
 
 ### Table
 
-# Update the options for the channel filter:
-@app.callback(
-    Output(component_id = "table_filter_cat_var_value", component_property = "options"),
-    [Input(component_id = "table_filter_cat_var_name", component_property = "value")]
-)
-def update_select_filter_cat(table_filter_cat_var_name):
-    opt0 = [{"label": "", "value": ""}]
-    if table_filter_cat_var_name in df_airplanes.columns:
-        opts = [{"label": l, "value": l} for l in df_airplanes[table_filter_cat_var_name].unique()]
-    else:
-        opts = [{"label": "", "value": ""}]
-    return (opt0 + opts)
-
-# Table with filters:
-@app.callback(
-    Output(component_id = "div_table", component_property = "children"),
-    [Input(component_id = "table_filter_num_var_name", component_property = "value"),
-     Input(component_id = "table_filter_num_operation", component_property = "value"),
-     Input(component_id = "table_filter_num_var_value", component_property = "value"),
-     Input(component_id = "table_filter_cat_var_name", component_property = "value"),
-     Input(component_id = "table_filter_cat_var_value", component_property = "value")
-     ]
-)
-def update_table(table_filter_num_var_name,
-                 table_filter_num_operation,
-                 table_filter_num_var_value,
-                 table_filter_cat_var_name,
-                 table_filter_cat_var_value):
-    # Filters:
-    df = df_videos.copy()
-    if table_filter_num_var_name != "Variable" and \
-            table_filter_num_operation != "Operator":
-        op_func = ops[table_filter_num_operation]
-        df = df[op_func(df[table_filter_num_var_name], table_filter_num_var_value)]
-    if table_filter_cat_var_name != "Variable" and \
-            table_filter_cat_var_value != "Levels" and \
-            table_filter_cat_var_value != "":
-        df = df[df[table_filter_cat_var_name] == table_filter_cat_var_value]
-    df.columns = nice_names
-
-    # Table:
-    table = dash_table.DataTable(
-        id = "table_data",
-        columns = [{"name": c, "id": c} for c in df.columns],
-        data = df.to_dict("records"),
-        page_size = 18,
-        style_as_list_view = True,
-        style_header = {
-            "backgroundColor": "rgb(30, 30, 30)"
-        },
-        style_cell = {
-            "backgroundColor": "rgb(50, 50, 50)",
-            "color": "white",
-            "textAlign": "center"
-        },
-        style_cell_conditional = [
-            {"if": {"column_id": ["Manufacturer Name",
-                                  "Model Name"]},
-             "textAlign": "left"}
-        ],
-        style_table = {
-            "overflowX": "auto"
-        }
-    )
-    return (table)
 
 
 ### Plots
 
 # Barplot of the number of videos by channel:
 
-# 1D histogram:
+# 1D Histogram:
 
 # 2D Density:
 
@@ -191,32 +129,50 @@ def update_table(table_filter_num_var_name,
 #----------------------------------------------------------------------------------------------------------------------
 ################################################## Frontend ###########################################################
 
+# Logo image:
+logo_filename = "dash_logo.png"
+encoded_image = base64.b64encode(open(logo_filename, "rb").read())
 
 # Layout:
 app.layout = html.Div(
-    [
-        html.Br(),
-        html.Br(),
-        html.H2("YouTube Videos EDA",
-                style = {"text-align": "center"}),
-        html.Br(),
-        html.Br(),
-        dbc.Tabs(
-            [
-                dbc.Tab(
-                    label = "Table",
-                    children = tab_table(vars_poss_filter_num = vars_poss_filter_num,
-                                         vars_poss_filter_cat = vars_poss_filter_cat,
-                                         filter_operations_poss = filter_operations_poss)
-                )#,
-                # dbc.Tab(
-                #     label = "Plots",
-                #     children = tab_plots()
-                # )
-            ]
+    children = [
+        dbc.Navbar(
+            dbc.Container(
+                [
+                    html.A(
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    html.Img(
+                                        src = "data:image/png;base64,{}".format(encoded_image.decode()),
+                                        height = "60px"
+                                    )
+                                )
+                            ],
+                            align = "left",
+                            className = "g-0",
+                        )
+                    ),
+                    dbc.Nav(
+                        [
+                            dbc.NavItem(
+                                dbc.NavLink("Table", href = "#")
+                            ),
+                            dbc.NavItem(
+                                dbc.NavLink("Plots", href = "#")
+                            )
+                        ],
+                        className = "ms-auto",
+                        navbar = True
+                    )
+                ],
+            ),
+            color = "#0D0629",
+            dark = True,
+            className = "mb-5",
         )
     ],
-    className = "main-div"
+    className = "div-main"
 )
 
 
