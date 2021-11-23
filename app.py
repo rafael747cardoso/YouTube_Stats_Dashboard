@@ -22,7 +22,9 @@ from dash import html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import base64
-
+from funcs.content_page_home import content_page_home
+from funcs.content_page_table import content_page_table
+from funcs.content_page_plots import content_page_plots
 
 # Display options:
 pd.set_option("display.width", 1200)
@@ -100,6 +102,7 @@ server = app.server
 
 ### Table
 
+# @app.callback()
 
 
 ### Plots
@@ -133,47 +136,88 @@ server = app.server
 logo_filename = "dash_logo.png"
 encoded_image = base64.b64encode(open(logo_filename, "rb").read())
 
-# Layout:
-app.layout = html.Div(
-    children = [
-        dbc.Navbar(
-            dbc.Container(
+# Content:
+content = html.Div(
+    children = [],
+    id = "page-content"
+)
+
+# Top navbar:
+top_navbar = dbc.Navbar(
+    children = dbc.Container(
+        [
+            html.A(
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            html.Img(
+                                src = "data:image/png;base64,{}".format(encoded_image.decode()),
+                                height = "60px"
+                            )
+                        )
+                    ]
+                )
+            ),
+            dbc.Nav(
                 [
-                    html.A(
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    html.Img(
-                                        src = "data:image/png;base64,{}".format(encoded_image.decode()),
-                                        height = "60px"
-                                    )
-                                )
-                            ],
-                            align = "left",
-                            className = "g-0",
+                    dbc.NavItem(
+                        dbc.NavLink(
+                            "Home",
+                            href = "/",
+                            active = "exact"
                         )
                     ),
-                    dbc.Nav(
-                        [
-                            dbc.NavItem(
-                                dbc.NavLink("Table", href = "#")
-                            ),
-                            dbc.NavItem(
-                                dbc.NavLink("Plots", href = "#")
-                            )
-                        ],
-                        className = "ms-auto",
-                        navbar = True
+                    dbc.NavItem(
+                        dbc.NavLink(
+                            "Table",
+                            href = "/page_table",
+                            active = "exact"
+                        )
+                    ),
+                    dbc.NavItem(
+                        dbc.NavLink(
+                            "Plots",
+                            href = "/page_plots",
+                            active = "exact"
+                        )
                     )
                 ],
-            ),
-            color = "#0D0629",
-            dark = True,
-            className = "mb-5",
-        )
+                navbar = True
+            )
+        ],
+        className = "my-navbar"
+    ),
+    color = "#0D0629"
+)
+
+# Layout:
+app.layout = html.Div(
+    [
+        dcc.Location(
+            id = "url"
+        ),
+        top_navbar,
+        content
     ],
     className = "div-main"
 )
+
+# Make the pages:
+@app.callback(
+    Output(component_id = "page-content", component_property = "children"),
+    [Input(component_id = "url", component_property = "pathname")]
+)
+def render_page_content(pathname):
+    if pathname == "/":
+        return content_page_home()
+    elif pathname == "/page_table":
+        return content_page_table()
+    elif pathname == "/page_plots":
+        return content_page_plots()
+
+
+
+
 
 
 
