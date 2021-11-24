@@ -18,7 +18,15 @@ def content_page_table():
     
     pg = [
         html.Div(
+            
             "Here goes the table page",
+            
+            
+            
+            
+            
+            
+            
             className = "welcome-page"
         )
     ]

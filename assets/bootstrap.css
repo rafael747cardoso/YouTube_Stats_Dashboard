@@ -11450,8 +11450,8 @@ a.text-dark:hover, a.text-dark:focus {
 	color: white;
 	font-size: 22px;
 	font-weight: 700;
-	padding-left: 0.5vw;
-    padding-right: 4vw;
+	padding-left: 2vw;
+    padding-right: 2vw;
 }
 
 .navbar-light .navbar-nav .show > .nav-link,
@@ -11463,6 +11463,20 @@ a.text-dark:hover, a.text-dark:focus {
 	color: #20F4E6;
 }
 
+.tab-icon {
+    -ms-flex-item-align: center !important;
+    align-self: center !important;
+    height: 40px;
+    width: 40px;
+}
+
+.card-tab-icon {
+    background-color: #0D0629;
+}
+
+.card-tab-body {
+    padding-top: 0px;
+}
 
 /************************************************** Home *************************************************************/
 
@@ -11513,8 +11527,17 @@ a.text-dark:hover, a.text-dark:focus {
     margin-bottom: 15px;
 }
 
-
 /************************************************** Table ************************************************************/
+
+
+
+
+
+
+
+
+
+
 
 
 

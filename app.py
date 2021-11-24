@@ -105,6 +105,13 @@ server = app.server
 # @app.callback()
 
 
+
+
+
+
+
+
+
 ### Plots
 
 # Barplot of the number of videos by channel:
@@ -132,9 +139,16 @@ server = app.server
 #----------------------------------------------------------------------------------------------------------------------
 ################################################## Frontend ###########################################################
 
-# Logo image:
+# Images for logo and tabs:
 logo_filename = "dash_logo.png"
-encoded_image = base64.b64encode(open(logo_filename, "rb").read())
+logo_image = base64.b64encode(open(logo_filename, "rb").read())
+
+home_tab_filename = "home_tab.png"
+home_tab_image = base64.b64encode(open(home_tab_filename, "rb").read())
+table_tab_filename = "table_tab.png"
+table_tab_image = base64.b64encode(open(table_tab_filename, "rb").read())
+plots_tab_filename = "plots_tab.png"
+plots_tab_image = base64.b64encode(open(plots_tab_filename, "rb").read())
 
 # Content:
 content = html.Div(
@@ -146,39 +160,83 @@ content = html.Div(
 top_navbar = dbc.Navbar(
     children = dbc.Container(
         [
+            # Dashboard logo:
             html.A(
                 dbc.Row(
                     [
                         dbc.Col(
                             html.Img(
-                                src = "data:image/png;base64,{}".format(encoded_image.decode()),
+                                src = "data:image/png;base64,{}".format(logo_image.decode()),
                                 height = "60px"
                             )
                         )
                     ]
                 )
             ),
+            # Main navbar:
             dbc.Nav(
                 [
+                    # Home:
                     dbc.NavItem(
-                        dbc.NavLink(
-                            "Home",
-                            href = "/",
-                            active = "exact"
+                        dbc.Card(
+                            [
+                                dbc.CardImg(
+                                    src = "data:image/png;base64,{}".format(home_tab_image.decode()),
+                                    top = True,
+                                    className = "tab-icon"
+                                ),
+                                dbc.CardBody(
+                                    dbc.NavLink(
+                                        "Home",
+                                        href = "/",
+                                        active = "exact"
+                                    ),
+                                    className = "card-tab-body"
+                                )
+                            ],
+                            className = "card-tab-icon"
                         )
                     ),
+                    # Table:
                     dbc.NavItem(
-                        dbc.NavLink(
-                            "Table",
-                            href = "/page_table",
-                            active = "exact"
+                        dbc.Card(
+                            [
+                                dbc.CardImg(
+                                    src = "data:image/png;base64,{}".format(table_tab_image.decode()),
+                                    top = True,
+                                    className = "tab-icon"
+                                ),
+                                dbc.CardBody(
+                                    dbc.NavLink(
+                                        "Table",
+                                        href = "/page_table",
+                                        active = "exact"
+                                    ),
+                                    className = "card-tab-body"
+                                )
+                            ],
+                            className = "card-tab-icon"
                         )
                     ),
+                    # Plots:
                     dbc.NavItem(
-                        dbc.NavLink(
-                            "Plots",
-                            href = "/page_plots",
-                            active = "exact"
+                        dbc.Card(
+                            [
+                                dbc.CardImg(
+                                    src = "data:image/png;base64,{}".format(plots_tab_image.decode()),
+                                    top = True,
+                                    className = "tab-icon"
+                                ),
+                                dbc.CardBody(
+                                    dbc.NavLink(
+                                        "Plots",
+                                        href = "/page_plots",
+                                        active = "exact"
+                                    ),
+                                    className = "card-tab-body"
+                                )
+                            ],
+                            className = "card-tab-icon"
                         )
                     )
                 ],
