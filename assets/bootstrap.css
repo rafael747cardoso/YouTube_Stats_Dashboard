@@ -11425,7 +11425,9 @@ a.text-dark:hover, a.text-dark:focus {
 /************************************************* My classes ********************************************************/
 /*********************************************************************************************************************/
 
-
+*, ::before, ::after {
+	background-color: #0D0629;
+}
 
 /************************************************** Main Div *********************************************************/
 
@@ -11470,6 +11472,47 @@ a.text-dark:hover, a.text-dark:focus {
     font-weight: 900;
     color: red;
 }
+
+.welcome-text {
+    font-size: 26px;
+    font-family: Helvetica, sans-serif;
+    font-style: normal;    
+    text-align: center;
+    color: #D9DB2D;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.welcome-note {
+	font-size: 24px;
+    font-family: Helvetica, sans-serif;
+    font-style: normal;    
+	text-align: left;
+	color: #D9DB2D;
+    padding-left: 3vw;
+    padding-top: 20px;
+}
+
+.welcome-link {
+	font-size: 24px;
+    font-family: Helvetica, sans-serif;
+    font-style: normal;    
+	text-align: center;
+	color: white;
+    padding-left: 3vw;
+    
+}
+
+.welcome-pic {
+    height: 29vw;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
 
 /************************************************** Table ************************************************************/
 
