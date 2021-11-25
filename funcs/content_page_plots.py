@@ -19,7 +19,7 @@ def content_page_plots():
     pg = [
         html.Div(
             "Here goes the plots page",
-            className = "welcome-page"
+            className = "plots-page"
         )
     ]
 

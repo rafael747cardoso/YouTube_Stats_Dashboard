@@ -11450,6 +11450,10 @@ a.text-dark:hover, a.text-dark:focus {
     margin-left: 0px !important;
 }
 
+.navbar .navbar-expand-md .navbar-light {
+    padding-bottom: 0px;
+}
+
 .navbar-light .navbar-nav .nav-link {
 	color: white;
 	font-size: 22px;
@@ -11464,7 +11468,7 @@ a.text-dark:hover, a.text-dark:focus {
 .navbar-light .navbar-nav .nav-link:focus,
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active {
-	color: #20F4E6;
+	color: #9984ED;
 }
 
 .tab-icon {
@@ -11472,6 +11476,10 @@ a.text-dark:hover, a.text-dark:focus {
     align-self: center !important;
     height: 40px;
     width: 40px;
+}
+
+.card-tab-icon.card {
+    margin-top: 10px;
 }
 
 .card-tab-icon {
@@ -11485,6 +11493,7 @@ a.text-dark:hover, a.text-dark:focus {
 /************************************************** Home *************************************************************/
 
 .welcome-page {
+    background-color: #0d0629;
     text-align: center;
     font-size: 50px;
     font-weight: 900;
@@ -11534,19 +11543,82 @@ a.text-dark:hover, a.text-dark:focus {
 /************************************************** Table ************************************************************/
 
 .table-page {
-    
+    background-color: #0d0629;
 }
 
 .table-data {
-    
+    margin-right: 1vw;
+    margin-left: 1vw;
+}
+.previous-next-container .first-page,
+.previous-next-container .previous-page,
+.previous-next-container .page-number,
+.previous-next-container .next-page,
+.previous-next-container .last-page {
+    background-color: #1d1832;
+    color: white;
 }
 
 
+
+/************************************************** Buttons **********************************************************/
+
+.button-right-end {
+    text-align: right;
+    padding-right: 2vw;
+    margin-bottom: 25px;  
+}
+
+.my-button {
+    font-size: 20px;
+    font-weight: 800;
+    font-family: Helvetica, sans-serif;
+    color: white;
+    background-color: #624EB2;
+}
+
+.my-button:hover {
+    background-color: #9984ED;
+}
+
 /************************************************** Cards ************************************************************/
 
+input, select {
+	width: 100%;
+}
+
+.form-select {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    color: #0D0337;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin-top: 1px;   
+}
+
+.form-control {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    color: #0D0337;
+}
 
 .card-container {
-    
+    background-color: #1D1832;
+    border: 2px solid #686379;
+    padding: 20px 2vw;
+    margin: 20px 1vw;
+    border-radius: 15px;
+}
+
+.filter-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 800;
+    font-family: Helvetica, sans-serif;
+    padding-top: 5px;
+    padding-bottom: 15px;
 }
 
 .card-summary {
@@ -11563,7 +11635,9 @@ a.text-dark:hover, a.text-dark:focus {
 
 /************************************************** Plots ************************************************************/
 
-
+.plots-page {
+    background-color: #0d0629;
+}
 
 
 
