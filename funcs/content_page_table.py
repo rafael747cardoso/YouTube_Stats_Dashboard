@@ -1,6 +1,4 @@
 
-### Make the content for the Table page
-
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 
@@ -10,11 +8,11 @@ def content_page_table(
         filter_operations_poss
 ):
     """
-    Makes the UI of the Table tab.
+    Make the content for the Table page.
     :param vars_poss_filter_cat:
     :param vars_poss_filter_num:
     :param filter_operations_poss:
-    :return: 
+    :return: pg
     """
 
     pg = [

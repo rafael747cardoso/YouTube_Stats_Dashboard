@@ -21,6 +21,8 @@ import base64
 from funcs.content_page_home import content_page_home
 from funcs.content_page_table import content_page_table
 from funcs.content_page_plots import content_page_plots
+from funcs.nice_data_format import nice_data_format
+from funcs.make_datatable import make_datatable
 
 # Display options:
 pd.set_option("display.width", 1200)
@@ -149,65 +151,11 @@ def update_table(n_clicks,
         df = df[op_func(df[table_filter_num_var_name], table_filter_num_var_value)]
     
     # Format the data for a nice view:
-    extra_space = " | "
-    if df.shape[0] > 0:
-        # Character variables:
-        vars_char = df.select_dtypes(exclude = [np.number]).columns.tolist()
-        for var in vars_char:
-            df[var] = df[var] + extra_space
-        
-        # Integer variables:
-        vars_int = df.select_dtypes(include = [int]).columns.tolist()
-        for var in vars_int:
-            df[var] = df[var].apply(lambda x: str("{:,d}".format(x)) + extra_space)
-        
-        # Float variables:
-        vars_float = df.select_dtypes(include = [float]).columns.tolist()
-        for var in vars_float:
-            var_min = min(df[var])
-            if var_min > 0:
-                decimals = int(round((abs(np.log10(min(df[var])))), 0))
-            else:
-                decimals = 3
-            df[var] = df[var].apply(lambda x: str(str("{:,." + str(decimals) + "f}").format(x)) + extra_space)
-    
-    # Nice names:
-    nice_header = [i + extra_space for i in nice_names]
-    df.columns = nice_header
+    nice_data_format(df = df,
+                     nice_names = nice_names)
 
     # Table:
-    table = dash_table.DataTable(
-        id = "dataset-table",
-        columns = [
-            {"name": c, "id": c} for c in df.columns
-        ],
-        data = df.to_dict("records"),
-        page_size = 15,
-        style_as_list_view = True,
-        style_table = {
-            "overflowX": "auto"
-        },
-        style_header = {
-            "backgroundColor": "rgb(30, 30, 30)",
-            "textAlign": "right"
-        },
-        style_cell = {
-            "backgroundColor": "rgb(50, 50, 50)",
-            "color": "white",
-            "textAlign": "right"
-        },
-        style_cell_conditional = [
-            {
-                "if": {
-                    "column_id": [
-                        "Channel",
-                        "Video"
-                    ]
-                },
-                "textAlign": "left"
-            }
-        ]
-    )
+    table = make_datatable(df = df)
     return(table)
 
 #################################################### Plots
