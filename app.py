@@ -34,7 +34,7 @@ pd.set_option("display.max_rows", 300)
 # Read the data:
 df_videos = dt.fread(path_data + "videos_data.csv", sep = ";").to_pandas()
 
-df_videos = df_videos[(df_videos["channel_title"] == "Mustard") | (df_videos["channel_title"] == "Steve Cutts")]
+# df_videos = df_videos[(df_videos["channel_title"] == "Mustard") | (df_videos["channel_title"] == "Steve Cutts")]
 
 
 # Selects options:
@@ -148,28 +148,28 @@ def update_table(n_clicks,
         op_func = ops[table_filter_num_operation]
         df = df[op_func(df[table_filter_num_var_name], table_filter_num_var_value)]
     
-    ### Format the data for a nice view
-    
-    # Character variables:
+    # Format the data for a nice view:
     extra_space = " | "
-    vars_char = df.select_dtypes(exclude = [np.number]).columns.tolist()
-    for var in vars_char:
-        df[var] = df[var] + extra_space
-    
-    # Integer variables:
-    vars_int = df.select_dtypes(include = [int]).columns.tolist()
-    for var in vars_int:
-        df[var] = df[var].apply(lambda x: str("{:,d}".format(x)) + extra_space)
-    
-    # Float variables:
-    vars_float = df.select_dtypes(include = [float]).columns.tolist()
-    for var in vars_float:
-        var_min = min(df[var])
-        if var_min > 0:
-            decimals = int(round((abs(np.log10(min(df[var])))), 0))
-        else:
-            decimals = 3
-        df[var] = df[var].apply(lambda x: str(str("{:,." + str(decimals) + "f}").format(x)) + extra_space)
+    if df.shape[0] > 0:
+        # Character variables:
+        vars_char = df.select_dtypes(exclude = [np.number]).columns.tolist()
+        for var in vars_char:
+            df[var] = df[var] + extra_space
+        
+        # Integer variables:
+        vars_int = df.select_dtypes(include = [int]).columns.tolist()
+        for var in vars_int:
+            df[var] = df[var].apply(lambda x: str("{:,d}".format(x)) + extra_space)
+        
+        # Float variables:
+        vars_float = df.select_dtypes(include = [float]).columns.tolist()
+        for var in vars_float:
+            var_min = min(df[var])
+            if var_min > 0:
+                decimals = int(round((abs(np.log10(min(df[var])))), 0))
+            else:
+                decimals = 3
+            df[var] = df[var].apply(lambda x: str(str("{:,." + str(decimals) + "f}").format(x)) + extra_space)
     
     # Nice names:
     nice_header = [i + extra_space for i in nice_names]
