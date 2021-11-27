@@ -41,31 +41,53 @@ def make_barplot(df):
     )
     fig.update_traces(
         textposition = "outside",
-        textfont_color = my_palette[n_levels // 2],
-        textfont_size = 15,
         hovertemplate = "<b>Channel: %{x}<br>Frequency: %{y:}</b><extra></extra>"
     )
     fig.update_layout(
-        xaxis_title = "<b>Channel</b>",
-        yaxis_title = "<b>Number of Videos</b>",
-        xaxis = dict(
-            tickangle = 40
-        ),
-        font = dict(
-            size = 18
-        ),
+        xaxis = {
+            "title": "<b>Channel</b>",
+            "titlefont": {
+                "size": 20,
+                "color": "white"
+            },
+            "tickfont": {
+                "size": 18,
+                "color": "white"
+            },
+            "gridcolor": "rgba(255, 255, 255, 0.3)"
+        },
+        yaxis = {
+            "title": "<b>Number of Videos</b>",
+            "titlefont": {
+                "size": 20,
+                "color": "white",
+                "family": "Helvetica"
+            },
+            "tickfont": {
+                "size": 18,
+                "color": "white",
+                "family": "Helvetica"
+            },
+            "gridcolor": "rgba(255, 255, 255, 0.3)"
+        },
+        font = {
+            "size": 18,
+            "color": "white",
+                "family": "Helvetica"
+        },
+        paper_bgcolor = "rgba(0,0,0,0)",
+        plot_bgcolor = "rgba(0,0,0,0)",
+        hoverlabel = {
+            "font_size": 18,
+            "font_family": "Helvetica"
+        },
+        margin = {
+            "l": 20,
+            "r": 20,
+            "t": 50,
+            "b": 20
+        },
         showlegend = False,
-        plot_bgcolor = "#0d0629",
-        hoverlabel = dict(
-            font_size = 18,
-            font_family = "Rockwell"
-        ),
-        margin = dict(
-            l = 20,
-            r = 20,
-            t = 50,
-            b = 20
-        ),
         height = 600
     )
     

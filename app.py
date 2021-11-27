@@ -179,12 +179,8 @@ def update_table(n_clicks,
 )
 def update_corr_matrix(plot_corr_matrix_chosen_channel):
     
-    print(plot_corr_matrix_chosen_channel)
-    
     # Data:
     df = df_videos.copy()[df_videos["channel_title"] == plot_corr_matrix_chosen_channel]
-
-    # Variables:
     df = df[list(vars_names.values())]
     corr_vals = df.corr()
     
@@ -215,27 +211,59 @@ def update_corr_matrix(plot_corr_matrix_chosen_channel):
             )
         ],
         layout = go.Layout(
-            font = dict(
-                size = 18
-            ),
+            xaxis = {
+                "title": "",
+                "titlefont": {
+                    "size": 20,
+                    "color": "white"
+                },
+                "tickfont": {
+                    "size": 18,
+                    "color": "white"
+                },
+                "gridcolor": "rgba(255, 255, 255, 0.3)"
+            },
+            yaxis = {
+                "title": "",
+                "titlefont": {
+                    "size": 20,
+                    "color": "white",
+                    "family": "Helvetica"
+                },
+                "tickfont": {
+                    "size": 18,
+                    "color": "white",
+                    "family": "Helvetica"
+                },
+                "gridcolor": "rgba(255, 255, 255, 0.3)"
+            },
+            font = {
+                "size": 18,
+                "color": "white",
+                "family": "Helvetica"
+            },
+            paper_bgcolor = "rgba(0,0,0,0)",
+            plot_bgcolor = "rgba(0,0,0,0)",
+            hoverlabel = {
+                "font_size": 18,
+                "font_family": "Helvetica"
+            },
+            margin = {
+                "l": 20,
+                "r": 20,
+                "t": 50,
+                "b": 20
+            },
             showlegend = False,
-            plot_bgcolor = "#0d0629",
-            hoverlabel = dict(
-                font_size = 18,
-                font_family = "Rockwell"
-            ),
-            margin = dict(
-                l = 400,
-                r = 20,
-                t = 20,
-                b = 20
-            ),
             height = 600
         )
     )
     return(fig)
 
 # 1D Histogram:
+
+
+
 
 # 2D Density:
 

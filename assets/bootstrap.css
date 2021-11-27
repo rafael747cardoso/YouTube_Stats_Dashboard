@@ -11639,7 +11639,9 @@ input, select {
     
 }
 
-
+.plot-row {
+    margin-top: 10px;
+}
 
 
 

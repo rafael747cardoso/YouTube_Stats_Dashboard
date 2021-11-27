@@ -34,9 +34,10 @@ def content_page_plots(
                 # Tabs row for the different types of plot:
                 dbc.Tabs(
                     [
-                        ### Plots without filters
+                        #################################### Plots without filters
                         
-                        # Barplot:
+                        ### Barplot
+                        
                         dbc.Tab(
                             [
                                 dbc.Row(
@@ -61,9 +62,10 @@ def content_page_plots(
                             class_name = "tab-plot"
                         ),
                         
-                        ### Plots with filters
+                        #################################### Plots with filters
                         
-                        # Correlation matrix:
+                        ### Correlation matrix
+                        
                         dbc.Tab(
                             [
                                 dbc.Row(
@@ -82,8 +84,12 @@ def content_page_plots(
                                                                             className = "filter-title"
                                                                         )
                                                                     ],
-                                                                    width = 12
-                                                                ),
+                                                                    width = 3
+                                                                )
+                                                            ]
+                                                        ),
+                                                        dbc.Row(
+                                                            [
                                                                 dbc.Col(
                                                                     [
                                                                         dbc.Select(
@@ -92,7 +98,7 @@ def content_page_plots(
                                                                             value = opts_channel[0]["value"]
                                                                         )
                                                                     ],
-                                                                    width = 6
+                                                                    width = 3
                                                                 )
                                                             ]
                                                         ),
@@ -103,17 +109,14 @@ def content_page_plots(
                                                                     [
                                                                         dcc.Graph(
                                                                             id = "plot_corr_matrix",
-                                                                            figure = {"layout": {"height": 650}}
+                                                                            figure = {}
                                                                         )
                                                                     ],
                                                                     width = 12
                                                                 )
-                                                            ]
+                                                            ],
+                                                            class_name = "plot-row"
                                                         )
-                                                        # dbc.Graph(
-                                                        #     id = "plot_corr_matrix",
-                                                        #     figure = ""
-                                                        # )
                                                     ],
                                                     class_name = "card-container"
                                                 )
@@ -126,15 +129,26 @@ def content_page_plots(
                             class_name = "tab-plot"
                         )
                         
-                        # 1D Histogram:
+                        ### 1D Histogram
                         
-                        # 2D Density:
                         
-                        # Scatter with colors:
                         
-                        # Bubble with colors:
                         
-                        # Scatter to compare 2 channels:
+                        ### 2D Density
+                        
+                        
+                        
+                        ### Scatter with colors
+                        
+                        
+                        
+                        ### Bubble with colors
+                        
+                        
+                        
+                        ### Scatter to compare 2 channels
+                        
+                        
                         
                     ],
                     class_name = "tabs-row-plots"
