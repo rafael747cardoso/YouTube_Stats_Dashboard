@@ -12,17 +12,21 @@ import numpy as np
 import pandas as pd
 import datatable as dt
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap, to_hex
 import plotly.express as px
 import plotly.graph_objects as go
 import operator
 from dash import Dash, dcc, html, dash_table, Input, Output, State
 import dash_bootstrap_components as dbc
 import base64
+
+# Modules:
 from funcs.content_page_home import content_page_home
 from funcs.content_page_table import content_page_table
 from funcs.content_page_plots import content_page_plots
 from funcs.nice_data_format import nice_data_format
 from funcs.make_datatable import make_datatable
+
 
 # Display options:
 pd.set_option("display.width", 1200)
@@ -36,7 +40,9 @@ pd.set_option("display.max_rows", 300)
 # Read the data:
 df_videos = dt.fread(path_data + "videos_data.csv", sep = ";").to_pandas()
 
-# df_videos = df_videos[(df_videos["channel_title"] == "Mustard") | (df_videos["channel_title"] == "Steve Cutts")]
+df_videos = df_videos[(df_videos["channel_title"] == "Mustard") |
+                      (df_videos["channel_title"] == "Steve Cutts") |
+                      (df_videos["channel_title"] == "Astrum")]
 
 
 # Selects options:
@@ -86,6 +92,10 @@ ops = {
 }
 cols_names = [i["value"] for i in vars_poss_filter_cat[1:]] + [i["value"] for i in vars_poss_filter_num[1:]]
 nice_names = [i["label"] for i in vars_poss_filter_cat[1:]] + [i["label"] for i in vars_poss_filter_num[1:]]
+channels = np.sort(df_videos["channel_title"].unique()).tolist()
+opts_channel = [{"label": i, "value": i} for i in channels]
+vars_names = dict([(i["label"], i["value"]) for i in vars_poss_filter_num[1:]])
+
 
 
 
@@ -158,13 +168,72 @@ def update_table(n_clicks,
     table = make_datatable(df = df)
     return(table)
 
-#################################################### Plots
+#################################################### Plots with filters
 
-# Barplot of the number of videos by channel:
+# Correlation Matrix:
+@app.callback(
+    Output(component_id = "plot_corr_matrix", component_property = "figure"),
+    [
+        Input(component_id = "plot_corr_matrix_chosen_channel", component_property = "value")
+    ]
+)
+def update_corr_matrix(plot_corr_matrix_chosen_channel):
+    
+    print(plot_corr_matrix_chosen_channel)
+    
+    # Data:
+    df = df_videos.copy()[df_videos["channel_title"] == plot_corr_matrix_chosen_channel]
 
+    # Variables:
+    df = df[list(vars_names.values())]
+    corr_vals = df.corr()
+    
+    # Palette:
+    n_colors = 100
+    my_colors = ["#000000", "#E008F8", "#F81D08", "#F88A08", "#F7FE04"]
+    cmap = LinearSegmentedColormap.from_list("my_palette", my_colors)
+    my_palette = [to_hex(j) for j in [cmap(i / n_colors) for i in np.array(range(n_colors))]]
 
-
-
+    # Plot:
+    xy_names = list(vars_names.keys())
+    fig = go.Figure(
+        data = [
+            go.Heatmap(
+                x = xy_names,
+                y = xy_names,
+                z = corr_vals,
+                colorscale = my_palette,
+                colorbar = dict(
+                    title = "<b>Pearson correlation </b>"
+                ),
+                zmin = -1,
+                zmax = 1,
+                hovertemplate = "<b>" +
+                                "%{x}<br>" +
+                                "%{y}</br>" +
+                                "Correlation: %{z:, }</b><extra></extra>"
+            )
+        ],
+        layout = go.Layout(
+            font = dict(
+                size = 18
+            ),
+            showlegend = False,
+            plot_bgcolor = "#0d0629",
+            hoverlabel = dict(
+                font_size = 18,
+                font_family = "Rockwell"
+            ),
+            margin = dict(
+                l = 400,
+                r = 20,
+                t = 20,
+                b = 20
+            ),
+            height = 600
+        )
+    )
+    return(fig)
 
 # 1D Histogram:
 
@@ -176,7 +245,6 @@ def update_table(n_clicks,
 
 # Scatter to compare 2 channels:
 
-# Correlation matrix:
 
 
 
@@ -321,7 +389,11 @@ def render_page_content(pathname):
                                   vars_poss_filter_num = vars_poss_filter_num,
                                   filter_operations_poss = filter_operations_poss)
     elif pathname == "/page_plots":
-        return content_page_plots()
+        return content_page_plots(vars_poss_filter_cat = vars_poss_filter_cat,
+                                  vars_poss_filter_num = vars_poss_filter_num,
+                                  filter_operations_poss = filter_operations_poss,
+                                  df_data = df_videos,
+                                  opts_channel = opts_channel)
 
 
 

@@ -1,5 +1,5 @@
 
-from dash import dcc, html
+from dash import html
 import dash_bootstrap_components as dbc
 
 def content_page_table(
@@ -151,18 +151,24 @@ def content_page_table(
                                             [
                                                 dbc.Col(
                                                     [
-                                                        html.Div(
-                                                            id = "dataset_table",
-                                                            children = "",
-                                                            className = "table-data"
+                                                        dbc.Spinner(
+                                                            [
+                                                                html.Div(
+                                                                    id = "dataset_table",
+                                                                    children = "",
+                                                                    className = "table-data"
+                                                                )
+                                                            ],
+                                                            color = "#a00710",
+                                                            type = "border",
+                                                            size = "md"
                                                         )
                                                     ]
                                                 )
                                             ]
                                         )
                                     ],
-                                    class_name = "card-container",
-                                    inverse = True
+                                    class_name = "card-container"
                                 )
                             ],
                             width = 12
