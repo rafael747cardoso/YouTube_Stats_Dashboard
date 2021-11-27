@@ -11643,10 +11643,23 @@ input, select {
     margin-top: 10px;
 }
 
+.rc-slider-track {
+	background-color: #3768eb;
+}
+.rc-slider-handle {
+	border: solid 2px #b87efd;
+	background-color: #831cfc;
+}
 
-
-
-
+.rc-slider-tooltip-inner {
+	padding-left: 5px;
+	padding-right: 5px;
+	height: 30px;
+	font-size: 16px;
+	color: white;
+	background-color: #831cfc;
+	font-weight: 800;
+}
 
 
 

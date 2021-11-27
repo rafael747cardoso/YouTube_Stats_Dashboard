@@ -46,9 +46,16 @@ def content_page_plots(
                                             [
                                                 dbc.Card(
                                                     [
-                                                        dcc.Graph(
-                                                            id = "plot_barplot",
-                                                            figure = make_barplot(df = df_data)
+                                                        dbc.Spinner(
+                                                            [
+                                                                dcc.Graph(
+                                                                    id = "plot_barplot",
+                                                                    figure = make_barplot(df = df_data)
+                                                                )
+                                                            ],
+                                                            color = "#a00710",
+                                                            type = "border",
+                                                            size = "md"
                                                         )
                                                     ],
                                                     class_name = "card-container"
@@ -112,9 +119,16 @@ def content_page_plots(
                                                             [
                                                                 dbc.Col(
                                                                     [
-                                                                        dcc.Graph(
-                                                                            id = "plot_corr_matrix",
-                                                                            figure = {}
+                                                                        dbc.Spinner(
+                                                                            [
+                                                                                dcc.Graph(
+                                                                                    id = "plot_corr_matrix",
+                                                                                    figure = {}
+                                                                                )
+                                                                            ],
+                                                                            color = "#a00710",
+                                                                            type = "border",
+                                                                            size = "md"
                                                                         )
                                                                     ],
                                                                     width = 12
@@ -164,7 +178,7 @@ def content_page_plots(
                                                                                 dbc.Col(
                                                                                     [
                                                                                         dbc.Select(
-                                                                                            id = "plot_1_histogram_chosen_channel",
+                                                                                            id = "plot_1d_histogram_chosen_channel",
                                                                                             options = opts_channel,
                                                                                             value = opts_channel[0]["value"]
                                                                                         )
@@ -193,9 +207,9 @@ def content_page_plots(
                                                                                 dbc.Col(
                                                                                     [
                                                                                         dbc.Select(
-                                                                                            id = "plot_1_histogram_chosen_xvar",
+                                                                                            id = "plot_1d_histogram_chosen_xvar",
                                                                                             options = vars_poss_filter_num,
-                                                                                            value = vars_poss_filter_num[0]["value"]
+                                                                                            value = vars_poss_filter_num[1]["value"]
                                                                                         )
                                                                                     ],
                                                                                     width = 12
@@ -222,9 +236,52 @@ def content_page_plots(
                                                                                 dbc.Col(
                                                                                     [
                                                                                         dbc.Input(
-                                                                                            id = "plot_1_histogram_chosen_bins",
+                                                                                            id = "plot_1d_histogram_chosen_bins",
                                                                                             type = "number",
-                                                                                            value = 50
+                                                                                            value = 50,
+                                                                                            min = 10,
+                                                                                            max = 1000,
+                                                                                            step = 10
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # Range:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Range",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        # update_range_slider
+                                                                                        # html.Div(
+                                                                                        #     id = "",
+                                                                                        #     children = ""
+                                                                                        # )
+                                                                                        dcc.RangeSlider(
+                                                                                            id = "plot_1d_histogram_chosen_range",
+                                                                                            min = 0,
+                                                                                            max = 100000,
+                                                                                            step = 500,
+                                                                                            value = [10000, 50000],
+                                                                                            tooltip = {
+                                                                                                "placement": "bottom",
+                                                                                                "always_visible": True
+                                                                                            }
                                                                                         )
                                                                                     ],
                                                                                     width = 12
@@ -241,9 +298,16 @@ def content_page_plots(
                                                             [
                                                                 dbc.Col(
                                                                     [
-                                                                        dcc.Graph(
-                                                                            id = "plot_1d_histogram",
-                                                                            figure = {}
+                                                                        dbc.Spinner(
+                                                                            [
+                                                                                dcc.Graph(
+                                                                                    id = "plot_1d_histogram",
+                                                                                    figure = {}
+                                                                                )
+                                                                            ],
+                                                                            color = "#a00710",
+                                                                            type = "border",
+                                                                            size = "md"
                                                                         )
                                                                     ],
                                                                     width = 12

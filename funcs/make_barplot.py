@@ -26,7 +26,7 @@ def make_barplot(df):
 
     # Palette:
     n_levels = df_plot.shape[0]
-    cmap = LinearSegmentedColormap.from_list("my_palette", ["#111539", "#97A1D9"])
+    cmap = LinearSegmentedColormap.from_list("my_palette", ["#2a7b9b", "#add45c"])
     my_palette = [to_hex(j) for j in [cmap(i / n_levels) for i in np.array(range(n_levels))]]
 
     # Plot:

@@ -19,6 +19,7 @@ import operator
 from dash import Dash, dcc, html, dash_table, Input, Output, State
 import dash_bootstrap_components as dbc
 import base64
+from scipy.stats import skew
 
 # Modules:
 from funcs.content_page_home import content_page_home
@@ -94,8 +95,8 @@ cols_names = [i["value"] for i in vars_poss_filter_cat[1:]] + [i["value"] for i 
 nice_names = [i["label"] for i in vars_poss_filter_cat[1:]] + [i["label"] for i in vars_poss_filter_num[1:]]
 channels = np.sort(df_videos["channel_title"].unique()).tolist()
 opts_channel = [{"label": i, "value": i} for i in channels]
-vars_names = dict([(i["label"], i["value"]) for i in vars_poss_filter_num[1:]])
-
+vars_names = dict([(i["value"], i["label"]) for i in vars_poss_filter_num[1:]])
+vars_names_inv = dict([(i["label"], i["value"]) for i in vars_poss_filter_num[1:]])
 
 
 
@@ -170,7 +171,8 @@ def update_table(n_clicks,
 
 #################################################### Plots with filters
 
-# Correlation Matrix:
+### Correlation Matrix
+
 @app.callback(
     Output(component_id = "plot_corr_matrix", component_property = "figure"),
     [
@@ -180,7 +182,7 @@ def update_table(n_clicks,
 def update_corr_matrix(plot_corr_matrix_chosen_channel):
     # Data:
     df = df_videos.copy()[df_videos["channel_title"] == plot_corr_matrix_chosen_channel]
-    df = df[list(vars_names.values())]
+    df = df[list(vars_names_inv.values())]
     corr_vals = df.corr()
     
     # Palette:
@@ -190,7 +192,7 @@ def update_corr_matrix(plot_corr_matrix_chosen_channel):
     my_palette = [to_hex(j) for j in [cmap(i / n_colors) for i in np.array(range(n_colors))]]
 
     # Plot:
-    xy_names = list(vars_names.keys())
+    xy_names = list(vars_names_inv.keys())
     fig = go.Figure(
         data = [
             go.Heatmap(
@@ -259,38 +261,149 @@ def update_corr_matrix(plot_corr_matrix_chosen_channel):
     )
     return(fig)
 
-# 1D Histogram:
+### 1D Histogram
+
+# Update the range slider:
+# @app.callback(
+#     Output()
+# )
+
 @app.callback(
     Output(component_id = "plot_1d_histogram", component_property = "figure"),
     [
-        Input(component_id = "plot_1_histogram_chosen_channel", component_property = "value")
-        Input(component_id = "plot_1_histogram_chosen_xvar", component_property = "value")
-        Input(component_id = "plot_1_histogram_chosen_bins", component_property = "value")
+        Input(component_id = "plot_1d_histogram_chosen_channel", component_property = "value"),
+        Input(component_id = "plot_1d_histogram_chosen_xvar", component_property = "value"),
+        Input(component_id = "plot_1d_histogram_chosen_bins", component_property = "value"),
+        Input(component_id = "plot_1d_histogram_chosen_range", component_property = "value")
     ]
 )
-def update_corr_matrix(plot_1_histogram_chosen_channel,
-                       plot_1_histogram_chosen_xvar,
-                       plot_1_histogram_chosen_bins):
-    
-    
-    
+def update_1d_histogram(chosen_channel,
+                        chosen_xvar,
+                        chosen_bins,
+                        chosen_range):
     # Data:
+    x_vals = df_videos.loc[df_videos["channel_title"] == chosen_channel, chosen_xvar]
+    
+    # Limits the bins:
+    if chosen_bins is None:
+        chosen_bins = 100
+    
+    # Filter the range:
+    x_vals = x_vals[(x_vals >= chosen_range[0]) & (x_vals <= chosen_range[1])]
+    
+    # Statistics:
+    x_mean = np.mean(x_vals)
+    x_median = np.median(x_vals)
+    x_std = np.std(x_vals)
+    x_skew = skew(x_vals)
+    
+    # Format the stats:
     
     # Plot:
-    
-    
-    
+    title_stats = "<b style = 'color: #c70039'>Mean</b>: " + f"{x_mean:.7g}      " +\
+                  "<b style = 'color: #ffc300'>Median</b>: " + f"{x_median:.7g}      " +\
+                  "<b>Standard deviation</b>: " + f"{x_std:.7g}      " +\
+                  "<b>Skewness</b>: " + f"{x_skew:.3g}"
+    fig = go.Figure(
+        data = [
+            go.Histogram(
+                x = x_vals,
+                histfunc = "count",
+                nbinsx = chosen_bins,
+                marker_color = "#00baad",
+                opacity = 1
+            )
+        ],
+        layout = go.Layout(
+            shapes = [
+                {
+                    "line": {
+                        "color": "#c70039",
+                        "dash": "dash",
+                        "width": 2
+                    },
+                    "type": "line",
+                    "x0": x_mean,
+                    "x1": x_mean,
+                    "xref": "x",
+                    "y0": 0,
+                    "y1": 1,
+                    "yref": "paper"
+                },
+                {
+                    "line": {
+                        "color": "#ffc300",
+                        "dash": "dash",
+                        "width": 2
+                    },
+                    "type": "line",
+                    "x0": x_median,
+                    "x1": x_median,
+                    "xref": "x",
+                    "y0": 0,
+                    "y1": 1,
+                    "yref": "paper"
+                }
+            ],
+            title = title_stats,
+            xaxis = {
+                "title": "<b>" + vars_names[chosen_xvar] + "</b>",
+                "titlefont": {
+                    "size": 20,
+                    "color": "white"
+                },
+                "tickfont": {
+                    "size": 18,
+                    "color": "white"
+                },
+                "gridcolor": "rgba(255, 255, 255, 0.3)"
+            },
+            yaxis = {
+                "title": "<b>Counts</b>",
+                "titlefont": {
+                    "size": 20,
+                    "color": "white",
+                    "family": "Helvetica"
+                },
+                "tickfont": {
+                    "size": 18,
+                    "color": "white",
+                    "family": "Helvetica"
+                },
+                "gridcolor": "rgba(255, 255, 255, 0.3)"
+            },
+            font = {
+                "size": 18,
+                "color": "white",
+                "family": "Helvetica"
+            },
+            paper_bgcolor = "rgba(0,0,0,0)",
+            plot_bgcolor = "rgba(0,0,0,0)",
+            hoverlabel = {
+                "font_size": 18,
+                "font_family": "Helvetica"
+            },
+            margin = {
+                "l": 20,
+                "r": 20,
+                "t": 70,
+                "b": 20
+            },
+            showlegend = False,
+            height = 600
+        )
+    )
     return (fig)
 
 
 
-# 2D Density:
+### 2D Density
 
-# Scatter with colors:
+### Scatter with colors
 
-# Bubble with colors:
+### Bubble with colors
 
-# Scatter to compare 2 channels:
+### Scatter to compare 2 channels
 
 
 
