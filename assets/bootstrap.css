@@ -11632,11 +11632,24 @@ input, select {
 }
 
 .tabs-row-plots {
-    
+    font-size: 20px;
+    font-weight: 800;
+    font-family: Helvetica, sans-serif;    
 }
 
 .tab-plot {
     
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+	color: #fff;
+	background-color: #6e56d0;
+	border-color: #6749e3 #826be1 #f4070700;
+}
+
+.nav-tabs {
+	border-bottom: 2px solid #8b3bce5e;
 }
 
 .plot-row {
@@ -11660,6 +11673,11 @@ input, select {
 	background-color: #831cfc;
 	font-weight: 800;
 }
+
+
+
+
+
 
 
 
