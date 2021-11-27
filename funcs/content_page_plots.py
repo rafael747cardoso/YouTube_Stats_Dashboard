@@ -267,17 +267,12 @@ def content_page_plots(
                                                                                 ),
                                                                                 dbc.Col(
                                                                                     [
-                                                                                        # update_range_slider
-                                                                                        # html.Div(
-                                                                                        #     id = "",
-                                                                                        #     children = ""
-                                                                                        # )
                                                                                         dcc.RangeSlider(
                                                                                             id = "plot_1d_histogram_chosen_range",
                                                                                             min = 0,
-                                                                                            max = 100000,
-                                                                                            step = 500,
-                                                                                            value = [10000, 50000],
+                                                                                            max = 1000,
+                                                                                            step = 10,
+                                                                                            value = [0, 1000],
                                                                                             tooltip = {
                                                                                                 "placement": "bottom",
                                                                                                 "always_visible": True

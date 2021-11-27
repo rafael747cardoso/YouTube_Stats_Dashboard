@@ -264,10 +264,59 @@ def update_corr_matrix(plot_corr_matrix_chosen_channel):
 ### 1D Histogram
 
 # Update the range slider:
-# @app.callback(
-#     Output()
-# )
+@app.callback(
+    Output(component_id = "plot_1d_histogram_chosen_range", component_property = "min"),
+    [
+        Input(component_id = "plot_1d_histogram_chosen_channel", component_property = "value"),
+        Input(component_id = "plot_1d_histogram_chosen_xvar", component_property = "value")
+    ]
+)
+def update_1d_histogram_range_min(chosen_channel,
+                              chosen_xvar):
+    x_vals = df_videos.loc[df_videos["channel_title"] == chosen_channel, chosen_xvar]
+    x_min = np.min(x_vals)
+    return(x_min)
 
+@app.callback(
+    Output(component_id = "plot_1d_histogram_chosen_range", component_property = "max"),
+    [
+        Input(component_id = "plot_1d_histogram_chosen_channel", component_property = "value"),
+        Input(component_id = "plot_1d_histogram_chosen_xvar", component_property = "value")
+    ]
+)
+def update_1d_histogram_range_max(chosen_channel,
+                                  chosen_xvar):
+    x_vals = df_videos.loc[df_videos["channel_title"] == chosen_channel, chosen_xvar]
+    x_max = np.max(x_vals)
+    return(x_max)
+
+@app.callback(
+    Output(component_id = "plot_1d_histogram_chosen_range", component_property = "step"),
+    [
+        Input(component_id = "plot_1d_histogram_chosen_range", component_property = "min"),
+        Input(component_id = "plot_1d_histogram_chosen_range", component_property = "max")
+    ]
+)
+def update_1d_histogram_range_step(chosen_xmin,
+                                   chosen_xmax):
+    n_points = 1000
+    step = (chosen_xmax - chosen_xmin)/n_points
+    return(step)
+
+@app.callback(
+    Output(component_id = "plot_1d_histogram_chosen_range", component_property = "value"),
+    [
+        Input(component_id = "plot_1d_histogram_chosen_range", component_property = "min"),
+        Input(component_id = "plot_1d_histogram_chosen_range", component_property = "max")
+    ]
+)
+def update_1d_histogram_range_value(chosen_xmin,
+                                    chosen_xmax):
+    value = [chosen_xmin, chosen_xmax]
+    return(value)
+
+
+# Plot:
 @app.callback(
     Output(component_id = "plot_1d_histogram", component_property = "figure"),
     [
