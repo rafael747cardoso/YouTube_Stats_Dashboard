@@ -79,23 +79,28 @@ def content_page_plots(
                                                             [
                                                                 dbc.Col(
                                                                     [
-                                                                        html.Div(
-                                                                            "Choose the channel",
-                                                                            className = "filter-title"
-                                                                        )
-                                                                    ],
-                                                                    width = 3
-                                                                )
-                                                            ]
-                                                        ),
-                                                        dbc.Row(
-                                                            [
-                                                                dbc.Col(
-                                                                    [
-                                                                        dbc.Select(
-                                                                            id = "plot_corr_matrix_chosen_channel",
-                                                                            options = opts_channel,
-                                                                            value = opts_channel[0]["value"]
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Channel",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_corr_matrix_chosen_channel",
+                                                                                            options = opts_channel,
+                                                                                            value = opts_channel[0]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
                                                                         )
                                                                     ],
                                                                     width = 3
@@ -127,13 +132,137 @@ def content_page_plots(
                             ],
                             label = "Correlation Matrix",
                             class_name = "tab-plot"
-                        )
+                        ),
                         
                         ### 1D Histogram
-                        
-                        
-                        
-                        
+
+                        dbc.Tab(
+                            [
+                                dbc.Row(
+                                    [
+                                        dbc.Col(
+                                            [
+                                                dbc.Card(
+                                                    [
+                                                        # Filters:
+                                                        dbc.Row(
+                                                            [
+                                                                # Channel:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Channel",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_1_histogram_chosen_channel",
+                                                                                            options = opts_channel,
+                                                                                            value = opts_channel[0]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # X variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "X Variable",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_1_histogram_chosen_xvar",
+                                                                                            options = vars_poss_filter_num,
+                                                                                            value = vars_poss_filter_num[0]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # Number of bins:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Bins",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Input(
+                                                                                            id = "plot_1_histogram_chosen_bins",
+                                                                                            type = "number",
+                                                                                            value = 50
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                )
+                                                            ]
+                                                        ),
+                                                        # Plot:
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Col(
+                                                                    [
+                                                                        dcc.Graph(
+                                                                            id = "plot_1d_histogram",
+                                                                            figure = {}
+                                                                        )
+                                                                    ],
+                                                                    width = 12
+                                                                )
+                                                            ],
+                                                            class_name = "plot-row"
+                                                        )
+                                                    ],
+                                                    class_name = "card-container"
+                                                )
+                                            ]
+                                        )
+                                    ]
+                                )
+                            ],
+                            label = "1D Histogram",
+                            class_name = "tab-plot"
+                        )
+                                                
                         ### 2D Density
                         
                         

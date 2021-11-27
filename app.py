@@ -178,7 +178,6 @@ def update_table(n_clicks,
     ]
 )
 def update_corr_matrix(plot_corr_matrix_chosen_channel):
-    
     # Data:
     df = df_videos.copy()[df_videos["channel_title"] == plot_corr_matrix_chosen_channel]
     df = df[list(vars_names.values())]
@@ -261,7 +260,27 @@ def update_corr_matrix(plot_corr_matrix_chosen_channel):
     return(fig)
 
 # 1D Histogram:
-
+@app.callback(
+    Output(component_id = "plot_1d_histogram", component_property = "figure"),
+    [
+        Input(component_id = "plot_1_histogram_chosen_channel", component_property = "value")
+        Input(component_id = "plot_1_histogram_chosen_xvar", component_property = "value")
+        Input(component_id = "plot_1_histogram_chosen_bins", component_property = "value")
+    ]
+)
+def update_corr_matrix(plot_1_histogram_chosen_channel,
+                       plot_1_histogram_chosen_xvar,
+                       plot_1_histogram_chosen_bins):
+    
+    
+    
+    # Data:
+    
+    # Plot:
+    
+    
+    
+    return (fig)
 
 
 
