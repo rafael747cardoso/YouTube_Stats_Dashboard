@@ -12,7 +12,6 @@ import dash_bootstrap_components as dbc
 from funcs.make_barplot import make_barplot
 
 def content_page_plots(
-        vars_poss_filter_cat,
         vars_poss_filter_num,
         filter_operations_poss,
         df_data,
@@ -20,7 +19,6 @@ def content_page_plots(
 ):
     """
     Make the content for the Plots page.
-    :param vars_poss_filter_cat:
     :param vars_poss_filter_num:
     :param filter_operations_poss:
     :param df_data:

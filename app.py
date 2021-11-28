@@ -45,13 +45,7 @@ df_videos = df_videos[(df_videos["channel_title"] == "Mustard") |
                       (df_videos["channel_title"] == "Steve Cutts") |
                       (df_videos["channel_title"] == "Astrum")]
 
-
 # Selects options:
-vars_poss_filter_cat = [
-    {"label": "Variable", "value": "Variable"},
-    {"label": "Channel", "value": "channel_title"},
-    {"label": "Video", "value": "video_title"}
-]
 vars_poss_filter_num = [
     {"label": "Variable", "value": "Variable"},
     {"label": "Views", "value": "views"},
@@ -91,8 +85,12 @@ ops = {
     "<": operator.lt,
     "<=": operator.le
 }
-cols_names = [i["value"] for i in vars_poss_filter_cat[1:]] + [i["value"] for i in vars_poss_filter_num[1:]]
-nice_names = [i["label"] for i in vars_poss_filter_cat[1:]] + [i["label"] for i in vars_poss_filter_num[1:]]
+vars_poss_cat = [
+    {"label": "Channel", "value": "channel_title"},
+    {"label": "Video", "value": "video_title"}
+]
+cols_names = [i["value"] for i in vars_poss_cat] + [i["value"] for i in vars_poss_filter_num[1:]]
+nice_names = [i["label"] for i in vars_poss_cat] + [i["label"] for i in vars_poss_filter_num[1:]]
 channels = np.sort(df_videos["channel_title"].unique()).tolist()
 opts_channel = [{"label": i, "value": i} for i in channels]
 vars_names = dict([(i["value"], i["label"]) for i in vars_poss_filter_num[1:]])
@@ -116,21 +114,6 @@ server = app.server
 
 #################################################### Table
 
-# Update the options for the categorical filter select:
-@app.callback(
-    Output(component_id = "table_filter_cat_var_value", component_property = "options"),
-    [
-        Input(component_id = "table_filter_cat_var_name", component_property = "value")
-    ]
-)
-def update_select_filter_cat(table_filter_cat_var_name):
-    opt0 = [{"label": "All", "value": "All"}]
-    if table_filter_cat_var_name in df_videos.columns:
-        opts = [{"label": l, "value": l} for l in df_videos[table_filter_cat_var_name].unique()]
-    else:
-        opts = [{"label": "", "value": ""}]
-    return(opt0 + opts)
-
 # Apply the filters on the table:
 @app.callback(
     Output(component_id = "dataset_table", component_property = "children"),
@@ -138,24 +121,20 @@ def update_select_filter_cat(table_filter_cat_var_name):
         Input(component_id = "bnt-apply-filters", component_property = "n_clicks")
     ],
     [
-        State(component_id = "table_filter_cat_var_name", component_property = "value"),
-        State(component_id = "table_filter_cat_var_value", component_property = "value"),
+        State(component_id = "table_chosen_channel", component_property = "value"),
         State(component_id = "table_filter_num_var_name", component_property = "value"),
         State(component_id = "table_filter_num_operation", component_property = "value"),
         State(component_id = "table_filter_num_var_value", component_property = "value")
     ]
 )
 def update_table(n_clicks,
-                 table_filter_cat_var_name,
-                 table_filter_cat_var_value,
+                 chosen_channel,
                  table_filter_num_var_name,
                  table_filter_num_operation,
                  table_filter_num_var_value):
     # Apply the filters:
     df = df_videos.copy()[cols_names]
-    if table_filter_cat_var_name != "Variable" and \
-       table_filter_cat_var_value != "All":
-        df = df[df[table_filter_cat_var_name] == table_filter_cat_var_value]
+    df = df[df["channel_title"] == chosen_channel]
     if table_filter_num_var_name != "Variable" and \
        table_filter_num_operation != "Operator":
         op_func = ops[table_filter_num_operation]
@@ -444,9 +423,10 @@ def update_1d_histogram(chosen_channel,
     )
     return (fig)
 
-
-
 ### 2D Density
+
+
+
 
 ### Scatter with colors
 
@@ -594,12 +574,11 @@ def render_page_content(pathname):
     if pathname == "/":
         return content_page_home()
     elif pathname == "/page_table":
-        return content_page_table(vars_poss_filter_cat = vars_poss_filter_cat,
+        return content_page_table(opts_channel = opts_channel,
                                   vars_poss_filter_num = vars_poss_filter_num,
                                   filter_operations_poss = filter_operations_poss)
     elif pathname == "/page_plots":
-        return content_page_plots(vars_poss_filter_cat = vars_poss_filter_cat,
-                                  vars_poss_filter_num = vars_poss_filter_num,
+        return content_page_plots(vars_poss_filter_num = vars_poss_filter_num,
                                   filter_operations_poss = filter_operations_poss,
                                   df_data = df_videos,
                                   opts_channel = opts_channel)

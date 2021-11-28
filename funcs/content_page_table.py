@@ -3,13 +3,13 @@ from dash import html
 import dash_bootstrap_components as dbc
 
 def content_page_table(
-        vars_poss_filter_cat,
+        opts_channel,
         vars_poss_filter_num,
         filter_operations_poss
 ):
     """
     Make the content for the Table page.
-    :param vars_poss_filter_cat:
+    :param opts_channel:
     :param vars_poss_filter_num:
     :param filter_operations_poss:
     :return: pg
@@ -38,7 +38,7 @@ def content_page_table(
                                                                         dbc.Col(
                                                                             [
                                                                                 html.Div(
-                                                                                    "Categoric filter",
+                                                                                    "Channel",
                                                                                     className = "filter-title"
                                                                                 )
                                                                             ],
@@ -47,23 +47,12 @@ def content_page_table(
                                                                         dbc.Col(
                                                                             [
                                                                                 dbc.Select(
-                                                                                    id = "table_filter_cat_var_name",
-                                                                                    options = vars_poss_filter_cat,
-                                                                                    value = vars_poss_filter_cat[0]["value"]
+                                                                                    id = "table_chosen_channel",
+                                                                                    options = opts_channel,
+                                                                                    value = opts_channel[0]["value"]
                                                                                 )
                                                                             ],
-                                                                            width = 6
-                                                                        ),
-                                                                        dbc.Col(
-                                                                            [
-                                                                                dbc.Select(
-                                                                                    id = "table_filter_cat_var_value",
-                                                                                    options = [{"label": "", "value": ""}],
-                                                                                    value = "",
-                                                                                    placeholder = "Values"
-                                                                                )
-                                                                            ],
-                                                                            width = 6
+                                                                            width = 12
                                                                         )
                                                                     ]
                                                                 )
