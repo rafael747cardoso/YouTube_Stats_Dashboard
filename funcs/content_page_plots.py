@@ -318,11 +318,143 @@ def content_page_plots(
                             ],
                             label = "1D Histogram",
                             class_name = "tab-plot"
-                        )
+                        ),
                                                 
                         ### 2D Density
-                        
-                        
+
+                        dbc.Tab(
+                            [
+                                dbc.Row(
+                                    [
+                                        dbc.Col(
+                                            [
+                                                dbc.Card(
+                                                    [
+                                                        # Filters:
+                                                        dbc.Row(
+                                                            [
+                                                                # Channel:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Channel",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_2d_density_chosen_channel",
+                                                                                            options = opts_channel,
+                                                                                            value = opts_channel[0]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # X variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "X Variable",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_2d_density_chosen_xvar",
+                                                                                            options = vars_poss_filter_num,
+                                                                                            value = vars_poss_filter_num[1]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # Y variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Y Variable",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_2d_density_chosen_yvar",
+                                                                                            options = vars_poss_filter_num,
+                                                                                            value = vars_poss_filter_num[2]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                )
+                                                            ]
+                                                        ),
+                                                        # Plot:
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Spinner(
+                                                                            [
+                                                                                dcc.Graph(
+                                                                                    id = "plot_2d_density",
+                                                                                    figure = {}
+                                                                                )
+                                                                            ],
+                                                                            color = "#a00710",
+                                                                            type = "border",
+                                                                            size = "md"
+                                                                        )
+                                                                    ],
+                                                                    width = 12
+                                                                )
+                                                            ],
+                                                            class_name = "plot-row"
+                                                        )
+                                                    ],
+                                                    class_name = "card-container"
+                                                )
+                                            ]
+                                        )
+                                    ]
+                                )
+                            ],
+                            label = "2D Density",
+                            class_name = "tab-plot"
+                        )
                         
                         ### Scatter with colors
                         

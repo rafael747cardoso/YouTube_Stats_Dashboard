@@ -5,54 +5,51 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, to_hex
 import plotly.express as px
 import plotly.graph_objects as go
+from scipy.stats import skew
 
-def make_corr_matrix_plot(
+
+def make_2d_density(
         df_data,
         chosen_channel,
-        vars_names_inv
+        chosen_xvar,
+        chosen_yvar,
+        vars_names
 ):
     """
-    Make the correlation matrix plot.
+    Make the 2D density plot.
     :param df_data:
     :param chosen_channel:
-    :param vars_names_inv:
+    :param chosen_xvar:
+    :param chosen_yvar:
+    :param vars_names:
     :return: fig
     """
-    
-    # Data:
-    df = df_data.copy()[df_data["channel_title"] == chosen_channel]
-    df = df[list(vars_names_inv.values())]
-    corr_vals = df.corr()
 
+    # Data:
+    df = df_data.loc[df_data["channel_title"] == chosen_channel]
+    x_vals = df[chosen_xvar]
+    y_vals = df[chosen_yvar]
+    
     # Palette:
-    n_colors = 100
     my_colors = ["#000000", "#E008F8", "#F81D08", "#F88A08", "#F7FE04"]
-    cmap = LinearSegmentedColormap.from_list("my_palette", my_colors)
-    my_palette = [to_hex(j) for j in [cmap(i / n_colors) for i in np.array(range(n_colors))]]
 
     # Plot:
-    xy_names = list(vars_names_inv.keys())
     fig = go.Figure(
         data = [
-            go.Heatmap(
-                x = xy_names,
-                y = xy_names,
-                z = corr_vals,
-                colorscale = my_palette,
+            go.Histogram2dContour(
+                x = x_vals,
+                y = y_vals,
+                colorscale = my_colors,
+                ncontours = 10,
+                histnorm = "probability density",
                 colorbar = dict(
-                    title = "<b>Pearson correlation </b>"
-                ),
-                zmin = -1,
-                zmax = 1,
-                hovertemplate = "<b>" +
-                                "%{x}<br>" +
-                                "%{y}</br>" +
-                                "Correlation: %{z:, }</b><extra></extra>"
+                    title = "<b>Density</b>"
+                )
             )
         ],
         layout = go.Layout(
             xaxis = {
-                "title": "",
+                "title": "<b>" + vars_names[chosen_xvar] + "</b>",
                 "titlefont": {
                     "size": 20,
                     "color": "white"
@@ -64,7 +61,7 @@ def make_corr_matrix_plot(
                 "gridcolor": "rgba(255, 255, 255, 0.3)"
             },
             yaxis = {
-                "title": "",
+                "title": "<b>" + vars_names[chosen_yvar] + "</b>",
                 "titlefont": {
                     "size": 20,
                     "color": "white",
@@ -82,8 +79,8 @@ def make_corr_matrix_plot(
                 "color": "white",
                 "family": "Helvetica"
             },
-            paper_bgcolor = "rgba(0, 0, 0, 0)",
-            plot_bgcolor = "rgba(0, 0, 0, 0)",
+            paper_bgcolor = "rgba(0,0,0,0)",
+            plot_bgcolor = "rgba(0,0,0,0)",
             hoverlabel = {
                 "font_size": 18,
                 "font_family": "Helvetica"
@@ -91,7 +88,7 @@ def make_corr_matrix_plot(
             margin = {
                 "l": 20,
                 "r": 20,
-                "t": 50,
+                "t": 70,
                 "b": 20
             },
             showlegend = False,

@@ -29,6 +29,7 @@ from funcs.nice_data_format import nice_data_format
 from funcs.make_datatable import make_datatable
 from funcs.make_corr_matrix_plot import make_corr_matrix_plot
 from funcs.make_1d_histogram import make_1d_histogram
+from funcs.make_2d_density import make_2d_density
 
 # Display options:
 pd.set_option("display.width", 1200)
@@ -145,6 +146,7 @@ def update_datatable(n_clicks,
 
 ### Correlation Matrix
 
+# Plot:
 @app.callback(
     Output(component_id = "plot_corr_matrix", component_property = "figure"),
     [
@@ -158,7 +160,7 @@ def update_corr_matrix_plot(plot_corr_matrix_chosen_channel):
 
 ### 1D Histogram
 
-# Update the range slider:
+# Update the range slider min:
 @app.callback(
     Output(component_id = "plot_1d_histogram_chosen_range", component_property = "min"),
     [
@@ -172,6 +174,7 @@ def update_1d_histogram_range_min(chosen_channel,
     x_min = np.min(x_vals)
     return(x_min)
 
+# Update the range slider max:
 @app.callback(
     Output(component_id = "plot_1d_histogram_chosen_range", component_property = "max"),
     [
@@ -185,6 +188,7 @@ def update_1d_histogram_range_max(chosen_channel,
     x_max = np.max(x_vals)
     return(x_max)
 
+# Update the range slider step:
 @app.callback(
     Output(component_id = "plot_1d_histogram_chosen_range", component_property = "step"),
     [
@@ -198,6 +202,7 @@ def update_1d_histogram_range_step(chosen_xmin,
     step = (chosen_xmax - chosen_xmin)/n_points
     return(step)
 
+# Update the range slider value:
 @app.callback(
     Output(component_id = "plot_1d_histogram_chosen_range", component_property = "value"),
     [
@@ -233,12 +238,45 @@ def update_1d_histogram(plot_1d_histogram_chosen_channel,
 
 ### 2D Density
 
+# Plot:
+@app.callback(
+    Output(component_id = "plot_2d_density", component_property = "figure"),
+    [
+        Input(component_id = "plot_2d_density_chosen_channel", component_property = "value"),
+        Input(component_id = "plot_2d_density_chosen_xvar", component_property = "value"),
+        Input(component_id = "plot_2d_density_chosen_yvar", component_property = "value")
+    ]
+)
+def update_2d_density(plot_2d_density_chosen_channel,
+                      plot_2d_density_chosen_xvar,
+                      plot_2d_density_chosen_yvar):
+    return(make_2d_density(df_data = df_videos, 
+                           chosen_channel = plot_2d_density_chosen_channel,
+                           chosen_xvar = plot_2d_density_chosen_xvar,
+                           chosen_yvar = plot_2d_density_chosen_yvar,
+                           vars_names = vars_names))
+
+### Bubble with colors (with size = constant option)
+
+# Plot:
+@app.callback(
+    Output(component_id = "plot_bubble", component_property = "figure"),
+    [
+        Input(component_id = "plot_2d_density_chosen_channel", component_property = "value"),
+        Input(component_id = "plot_2d_density_chosen_xvar", component_property = "value"),
+        Input(component_id = "plot_2d_density_chosen_yvar", component_property = "value")
+    ]
+)
+def update_bubble(plot_2d_density_chosen_channel,
+                      plot_2d_density_chosen_xvar,
+                      plot_2d_density_chosen_yvar):
+    return(make_2d_density(df_data = df_videos, 
+                           chosen_channel = plot_2d_density_chosen_channel,
+                           chosen_xvar = plot_2d_density_chosen_xvar,
+                           chosen_yvar = plot_2d_density_chosen_yvar,
+                           vars_names = vars_names))
 
 
-
-### Scatter with colors
-
-### Bubble with colors
 
 ### Scatter to compare 2 channels
 

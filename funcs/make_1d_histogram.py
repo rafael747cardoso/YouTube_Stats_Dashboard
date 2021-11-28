@@ -17,7 +17,7 @@ def make_1d_histogram(
         vars_names
 ):
     """
-    Make the correlation matrix plot.
+    Make the 1D histogram plot.
     :param df_data:
     :param chosen_channel:
     :param chosen_xvar:
