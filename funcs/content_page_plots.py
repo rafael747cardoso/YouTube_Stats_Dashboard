@@ -1,5 +1,5 @@
 
-# Packages:
+# External modules:
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 
-# Modules:
+# Internal modules:
 from funcs.make_barplot import make_barplot
 
 def content_page_plots(

@@ -7,7 +7,7 @@ path_data = "data/"
 path_assets = "assets/"
 path_figs = "figs/"
 
-# Packages:
+# External modules:
 import numpy as np
 import pandas as pd
 import datatable as dt
@@ -21,13 +21,14 @@ import dash_bootstrap_components as dbc
 import base64
 from scipy.stats import skew
 
-# Modules:
+# Internal modules:
 from funcs.content_page_home import content_page_home
 from funcs.content_page_table import content_page_table
 from funcs.content_page_plots import content_page_plots
 from funcs.nice_data_format import nice_data_format
 from funcs.make_datatable import make_datatable
-
+from funcs.make_corr_matrix_plot import make_corr_matrix_plot
+from funcs.make_1d_histogram import make_1d_histogram
 
 # Display options:
 pd.set_option("display.width", 1200)
@@ -127,28 +128,20 @@ server = app.server
         State(component_id = "table_filter_num_var_value", component_property = "value")
     ]
 )
-def update_table(n_clicks,
-                 chosen_channel,
-                 table_filter_num_var_name,
-                 table_filter_num_operation,
-                 table_filter_num_var_value):
-    # Apply the filters:
-    df = df_videos.copy()[cols_names]
-    df = df[df["channel_title"] == chosen_channel]
-    if table_filter_num_var_name != "Variable" and \
-       table_filter_num_operation != "Operator":
-        op_func = ops[table_filter_num_operation]
-        df = df[op_func(df[table_filter_num_var_name], table_filter_num_var_value)]
-    
-    # Format the data for a nice view:
-    nice_data_format(df = df,
-                     nice_names = nice_names)
+def update_datatable(n_clicks,
+                     table_chosen_channel,
+                     table_filter_num_var_name,
+                     table_filter_num_operation,
+                     table_filter_num_var_value):
+    return(make_datatable(df_data = df_videos,
+                          chosen_channel = table_chosen_channel,
+                          num_var_name = table_filter_num_var_name,
+                          num_operation = table_filter_num_operation,
+                          num_var_value = table_filter_num_var_value,
+                          col_names = col_names,
+                          nice_names = nice_names))
 
-    # Table:
-    table = make_datatable(df = df)
-    return(table)
-
-#################################################### Plots with filters
+#################################################### Plots
 
 ### Correlation Matrix
 
@@ -158,87 +151,10 @@ def update_table(n_clicks,
         Input(component_id = "plot_corr_matrix_chosen_channel", component_property = "value")
     ]
 )
-def update_corr_matrix(plot_corr_matrix_chosen_channel):
-    # Data:
-    df = df_videos.copy()[df_videos["channel_title"] == plot_corr_matrix_chosen_channel]
-    df = df[list(vars_names_inv.values())]
-    corr_vals = df.corr()
-    
-    # Palette:
-    n_colors = 100
-    my_colors = ["#000000", "#E008F8", "#F81D08", "#F88A08", "#F7FE04"]
-    cmap = LinearSegmentedColormap.from_list("my_palette", my_colors)
-    my_palette = [to_hex(j) for j in [cmap(i / n_colors) for i in np.array(range(n_colors))]]
-
-    # Plot:
-    xy_names = list(vars_names_inv.keys())
-    fig = go.Figure(
-        data = [
-            go.Heatmap(
-                x = xy_names,
-                y = xy_names,
-                z = corr_vals,
-                colorscale = my_palette,
-                colorbar = dict(
-                    title = "<b>Pearson correlation </b>"
-                ),
-                zmin = -1,
-                zmax = 1,
-                hovertemplate = "<b>" +
-                                "%{x}<br>" +
-                                "%{y}</br>" +
-                                "Correlation: %{z:, }</b><extra></extra>"
-            )
-        ],
-        layout = go.Layout(
-            xaxis = {
-                "title": "",
-                "titlefont": {
-                    "size": 20,
-                    "color": "white"
-                },
-                "tickfont": {
-                    "size": 18,
-                    "color": "white"
-                },
-                "gridcolor": "rgba(255, 255, 255, 0.3)"
-            },
-            yaxis = {
-                "title": "",
-                "titlefont": {
-                    "size": 20,
-                    "color": "white",
-                    "family": "Helvetica"
-                },
-                "tickfont": {
-                    "size": 18,
-                    "color": "white",
-                    "family": "Helvetica"
-                },
-                "gridcolor": "rgba(255, 255, 255, 0.3)"
-            },
-            font = {
-                "size": 18,
-                "color": "white",
-                "family": "Helvetica"
-            },
-            paper_bgcolor = "rgba(0,0,0,0)",
-            plot_bgcolor = "rgba(0,0,0,0)",
-            hoverlabel = {
-                "font_size": 18,
-                "font_family": "Helvetica"
-            },
-            margin = {
-                "l": 20,
-                "r": 20,
-                "t": 50,
-                "b": 20
-            },
-            showlegend = False,
-            height = 600
-        )
-    )
-    return(fig)
+def update_corr_matrix_plot(plot_corr_matrix_chosen_channel):
+    return(make_corr_matrix_plot(df_data = df_videos, 
+                                 chosen_channel = plot_corr_matrix_chosen_channel,
+                                 vars_names_inv = vars_names_inv))
 
 ### 1D Histogram
 
@@ -251,7 +167,7 @@ def update_corr_matrix(plot_corr_matrix_chosen_channel):
     ]
 )
 def update_1d_histogram_range_min(chosen_channel,
-                              chosen_xvar):
+                                  chosen_xvar):
     x_vals = df_videos.loc[df_videos["channel_title"] == chosen_channel, chosen_xvar]
     x_min = np.min(x_vals)
     return(x_min)
@@ -294,7 +210,6 @@ def update_1d_histogram_range_value(chosen_xmin,
     value = [chosen_xmin, chosen_xmax]
     return(value)
 
-
 # Plot:
 @app.callback(
     Output(component_id = "plot_1d_histogram", component_property = "figure"),
@@ -305,123 +220,16 @@ def update_1d_histogram_range_value(chosen_xmin,
         Input(component_id = "plot_1d_histogram_chosen_range", component_property = "value")
     ]
 )
-def update_1d_histogram(chosen_channel,
-                        chosen_xvar,
-                        chosen_bins,
-                        chosen_range):
-    # Data:
-    x_vals = df_videos.loc[df_videos["channel_title"] == chosen_channel, chosen_xvar]
-    
-    # Limits the bins:
-    if chosen_bins is None:
-        chosen_bins = 100
-    
-    # Filter the range:
-    x_vals = x_vals[(x_vals >= chosen_range[0]) & (x_vals <= chosen_range[1])]
-    
-    # Statistics:
-    x_mean = np.mean(x_vals)
-    x_median = np.median(x_vals)
-    x_std = np.std(x_vals)
-    x_skew = skew(x_vals)
-    
-    # Format the stats:
-    
-    # Plot:
-    title_stats = "<b style = 'color: #c70039'>Mean</b>: " + f"{x_mean:.7g}      " +\
-                  "<b style = 'color: #ffc300'>Median</b>: " + f"{x_median:.7g}      " +\
-                  "<b>Standard deviation</b>: " + f"{x_std:.7g}      " +\
-                  "<b>Skewness</b>: " + f"{x_skew:.3g}"
-    fig = go.Figure(
-        data = [
-            go.Histogram(
-                x = x_vals,
-                histfunc = "count",
-                nbinsx = chosen_bins,
-                marker_color = "#00baad",
-                opacity = 1
-            )
-        ],
-        layout = go.Layout(
-            shapes = [
-                {
-                    "line": {
-                        "color": "#c70039",
-                        "dash": "dash",
-                        "width": 2
-                    },
-                    "type": "line",
-                    "x0": x_mean,
-                    "x1": x_mean,
-                    "xref": "x",
-                    "y0": 0,
-                    "y1": 1,
-                    "yref": "paper"
-                },
-                {
-                    "line": {
-                        "color": "#ffc300",
-                        "dash": "dash",
-                        "width": 2
-                    },
-                    "type": "line",
-                    "x0": x_median,
-                    "x1": x_median,
-                    "xref": "x",
-                    "y0": 0,
-                    "y1": 1,
-                    "yref": "paper"
-                }
-            ],
-            title = title_stats,
-            xaxis = {
-                "title": "<b>" + vars_names[chosen_xvar] + "</b>",
-                "titlefont": {
-                    "size": 20,
-                    "color": "white"
-                },
-                "tickfont": {
-                    "size": 18,
-                    "color": "white"
-                },
-                "gridcolor": "rgba(255, 255, 255, 0.3)"
-            },
-            yaxis = {
-                "title": "<b>Counts</b>",
-                "titlefont": {
-                    "size": 20,
-                    "color": "white",
-                    "family": "Helvetica"
-                },
-                "tickfont": {
-                    "size": 18,
-                    "color": "white",
-                    "family": "Helvetica"
-                },
-                "gridcolor": "rgba(255, 255, 255, 0.3)"
-            },
-            font = {
-                "size": 18,
-                "color": "white",
-                "family": "Helvetica"
-            },
-            paper_bgcolor = "rgba(0,0,0,0)",
-            plot_bgcolor = "rgba(0,0,0,0)",
-            hoverlabel = {
-                "font_size": 18,
-                "font_family": "Helvetica"
-            },
-            margin = {
-                "l": 20,
-                "r": 20,
-                "t": 70,
-                "b": 20
-            },
-            showlegend = False,
-            height = 600
-        )
-    )
-    return (fig)
+def update_1d_histogram(plot_1d_histogram_chosen_channel,
+                        plot_1d_histogram_chosen_xvar,
+                        plot_1d_histogram_chosen_bins,
+                        plot_1d_histogram_chosen_range):
+    return(make_1d_histogram(df_data = df_videos,
+                             chosen_channel = plot_1d_histogram_chosen_channel,
+                             chosen_xvar = plot_1d_histogram_chosen_xvar,
+                             chosen_bins = plot_1d_histogram_chosen_bins,
+                             chosen_range = plot_1d_histogram_chosen_range,
+                             vars_names = vars_names))
 
 ### 2D Density
 

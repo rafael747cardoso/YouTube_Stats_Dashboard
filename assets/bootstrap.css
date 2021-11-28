@@ -11634,7 +11634,9 @@ input, select {
 .tabs-row-plots {
     font-size: 20px;
     font-weight: 800;
-    font-family: Helvetica, sans-serif;    
+    font-family: Helvetica, sans-serif;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .tab-plot {

@@ -1,12 +1,39 @@
 
 from dash import dash_table
 
-def make_datatable(df):
+def make_datatable(
+        df_data,
+        chosen_channel,
+        num_var_name,
+        num_operation,
+        num_var_value,
+        col_names,
+        nice_names
+):
     """
     Make the data_table.
-    :param df:
+    :param df_data:
+    :param chosen_channel:
+    :param num_var_name:
+    :param num_operation:
+    :param num_var_value:
+    :param col_names:
+    :param nice_names:
     :return: dt_table
     """
+
+    # Apply the filters:
+    df = df_data.copy()[cols_names]
+    df = df[df["channel_title"] == chosen_channel]
+    if num_var_name != "Variable" and \
+            num_operation != "Operator":
+        op_func = ops[num_operation]
+        df = df[op_func(df[num_var_name], num_var_value)]
+
+    # Format the data for a nice view:
+    nice_data_format(df = df,
+                     nice_names = nice_names)
+
     dt_table = dash_table.DataTable(
         id = "dataset-table",
         columns = [
@@ -40,4 +67,5 @@ def make_datatable(df):
         ]
     )
     return(dt_table)
+
 
