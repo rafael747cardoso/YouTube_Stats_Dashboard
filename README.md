@@ -29,7 +29,7 @@ The dataset contains the following features:
 - Mean comments/likes per day
 - Mean comments/dislikes per day
 
-* Apparently YouTube wont display the dislikes count anymore, which makes this kind of dataset even more interesting and possibly one of the last of its kind.
+* Apparently YouTube won't display the dislikes count anymore, which makes this kind of dataset even more interesting and possibly one of the last of its kind.
 
 ## Figures:
 
