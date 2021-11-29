@@ -30,6 +30,7 @@ from funcs.make_datatable import make_datatable
 from funcs.make_corr_matrix_plot import make_corr_matrix_plot
 from funcs.make_1d_histogram import make_1d_histogram
 from funcs.make_2d_density import make_2d_density
+from funcs.make_bubble import make_bubble
 
 # Display options:
 pd.set_option("display.width", 1200)
@@ -49,7 +50,6 @@ df_videos = df_videos[(df_videos["channel_title"] == "Mustard") |
 
 # Selects options:
 vars_poss_filter_num = [
-    {"label": "Variable", "value": "Variable"},
     {"label": "Views", "value": "views"},
     {"label": "Likes", "value": "likes"},
     {"label": "Dislikes", "value": "dislikes"},
@@ -73,7 +73,6 @@ vars_poss_filter_num = [
     {"label": "Mean comments/dislikes per day", "value": "mean_comments_dislikes_ratio_day"}
 ]
 filter_operations_poss = [
-    {"label": "Operator", "value": "Operator"},
     {"label": ">=", "value": ">="},
     {"label": ">", "value": ">"},
     {"label": "==", "value": "=="},
@@ -91,12 +90,12 @@ vars_poss_cat = [
     {"label": "Channel", "value": "channel_title"},
     {"label": "Video", "value": "video_title"}
 ]
-cols_names = [i["value"] for i in vars_poss_cat] + [i["value"] for i in vars_poss_filter_num[1:]]
-nice_names = [i["label"] for i in vars_poss_cat] + [i["label"] for i in vars_poss_filter_num[1:]]
+cols_names = [i["value"] for i in vars_poss_cat] + [i["value"] for i in vars_poss_filter_num]
+nice_names = [i["label"] for i in vars_poss_cat] + [i["label"] for i in vars_poss_filter_num]
 channels = np.sort(df_videos["channel_title"].unique()).tolist()
 opts_channel = [{"label": i, "value": i} for i in channels]
-vars_names = dict([(i["value"], i["label"]) for i in vars_poss_filter_num[1:]])
-vars_names_inv = dict([(i["label"], i["value"]) for i in vars_poss_filter_num[1:]])
+vars_names = dict([(i["value"], i["label"]) for i in vars_poss_filter_num])
+vars_names_inv = dict([(i["label"], i["value"]) for i in vars_poss_filter_num])
 
 
 
@@ -139,8 +138,9 @@ def update_datatable(n_clicks,
                           num_var_name = table_filter_num_var_name,
                           num_operation = table_filter_num_operation,
                           num_var_value = table_filter_num_var_value,
-                          col_names = col_names,
-                          nice_names = nice_names))
+                          cols_names = cols_names,
+                          nice_names = nice_names,
+                          ops = ops))
 
 #################################################### Plots
 
@@ -256,27 +256,31 @@ def update_2d_density(plot_2d_density_chosen_channel,
                            chosen_yvar = plot_2d_density_chosen_yvar,
                            vars_names = vars_names))
 
-### Bubble with colors (with size = constant option)
+### Bubble with colors
 
 # Plot:
 @app.callback(
     Output(component_id = "plot_bubble", component_property = "figure"),
     [
-        Input(component_id = "plot_2d_density_chosen_channel", component_property = "value"),
-        Input(component_id = "plot_2d_density_chosen_xvar", component_property = "value"),
-        Input(component_id = "plot_2d_density_chosen_yvar", component_property = "value")
+        Input(component_id = "plot_bubble_chosen_channel", component_property = "value"),
+        Input(component_id = "plot_bubble_chosen_xvar", component_property = "value"),
+        Input(component_id = "plot_bubble_chosen_yvar", component_property = "value"),
+        Input(component_id = "plot_bubble_chosen_sizevar", component_property = "value"),
+        Input(component_id = "plot_bubble_chosen_colorvar", component_property = "value"),
     ]
 )
-def update_bubble(plot_2d_density_chosen_channel,
-                      plot_2d_density_chosen_xvar,
-                      plot_2d_density_chosen_yvar):
-    return(make_2d_density(df_data = df_videos, 
-                           chosen_channel = plot_2d_density_chosen_channel,
-                           chosen_xvar = plot_2d_density_chosen_xvar,
-                           chosen_yvar = plot_2d_density_chosen_yvar,
-                           vars_names = vars_names))
-
-
+def update_bubble(plot_bubble_chosen_channel,
+                  plot_bubble_chosen_xvar,
+                  plot_bubble_chosen_yvar,
+                  plot_bubble_chosen_sizevar,
+                  plot_bubble_chosen_colorvar):
+    return(make_bubble(df_data = df_videos, 
+                       chosen_channel = plot_bubble_chosen_channel,
+                       chosen_xvar = plot_bubble_chosen_xvar,
+                       chosen_yvar = plot_bubble_chosen_yvar,
+                       chosen_sizevar = plot_bubble_chosen_sizevar,
+                       chosen_colorvar = plot_bubble_chosen_colorvar,
+                       vars_names = vars_names))
 
 ### Scatter to compare 2 channels
 

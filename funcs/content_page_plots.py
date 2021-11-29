@@ -1,5 +1,4 @@
 
-# External modules:
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,8 +6,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dash import dcc, html
 import dash_bootstrap_components as dbc
-
-# Internal modules:
 from funcs.make_barplot import make_barplot
 
 def content_page_plots(
@@ -454,17 +451,204 @@ def content_page_plots(
                             ],
                             label = "2D Density",
                             class_name = "tab-plot"
+                        ),
+                                                
+                        ### Bubble with colors
+
+                        dbc.Tab(
+                            [
+                                dbc.Row(
+                                    [
+                                        dbc.Col(
+                                            [
+                                                dbc.Card(
+                                                    [
+                                                        # Filters:
+                                                        dbc.Row(
+                                                            [
+                                                                # Channel:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Channel",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_bubble_chosen_channel",
+                                                                                            options = opts_channel,
+                                                                                            value = opts_channel[0]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # X variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "X Variable",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_bubble_chosen_xvar",
+                                                                                            options = vars_poss_filter_num,
+                                                                                            value = vars_poss_filter_num[1]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # Y variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Y Variable",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_bubble_chosen_yvar",
+                                                                                            options = vars_poss_filter_num,
+                                                                                            value = vars_poss_filter_num[2]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # Size variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Size Variable",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_bubble_chosen_sizevar",
+                                                                                            options = vars_poss_filter_num,
+                                                                                            value = vars_poss_filter_num[3]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # Color variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Color Variable",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_bubble_chosen_colorvar",
+                                                                                            options = vars_poss_filter_num,
+                                                                                            value = vars_poss_filter_num[4]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                )
+                                                            ]
+                                                        ),
+                                                        # Plot:
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Spinner(
+                                                                            [
+                                                                                dcc.Graph(
+                                                                                    id = "plot_bubble",
+                                                                                    figure = {}
+                                                                                )
+                                                                            ],
+                                                                            color = "#a00710",
+                                                                            type = "border",
+                                                                            size = "md"
+                                                                        )
+                                                                    ],
+                                                                    width = 12
+                                                                )
+                                                            ],
+                                                            class_name = "plot-row"
+                                                        )
+                                                    ],
+                                                    class_name = "card-container"
+                                                )
+                                            ]
+                                        )
+                                    ]
+                                )
+                            ],
+                            label = "Bubble",
+                            class_name = "tab-plot"
                         )
                         
-                        ### Scatter with colors
-                        
-                        
-                        
-                        ### Bubble with colors
-                        
-                        
-                        
                         ### Scatter to compare 2 channels
+                        
                         
                         
                         

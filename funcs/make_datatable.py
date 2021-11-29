@@ -1,5 +1,6 @@
 
 from dash import dash_table
+from funcs.nice_data_format import nice_data_format
 
 def make_datatable(
         df_data,
@@ -7,8 +8,9 @@ def make_datatable(
         num_var_name,
         num_operation,
         num_var_value,
-        col_names,
-        nice_names
+        cols_names,
+        nice_names,
+        ops
 ):
     """
     Make the data_table.
@@ -17,16 +19,16 @@ def make_datatable(
     :param num_var_name:
     :param num_operation:
     :param num_var_value:
-    :param col_names:
+    :param cols_names:
     :param nice_names:
+    :param ops:
     :return: dt_table
     """
 
     # Apply the filters:
     df = df_data.copy()[cols_names]
     df = df[df["channel_title"] == chosen_channel]
-    if num_var_name != "Variable" and \
-            num_operation != "Operator":
+    if num_operation in list(ops.keys()) and num_var_name in cols_names:
         op_func = ops[num_operation]
         df = df[op_func(df[num_var_name], num_var_value)]
 

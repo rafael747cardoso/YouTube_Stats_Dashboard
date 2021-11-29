@@ -83,7 +83,8 @@ def content_page_table(
                                                                                 dbc.Select(
                                                                                     id = "table_filter_num_var_name",
                                                                                     options = vars_poss_filter_num,
-                                                                                    value = vars_poss_filter_num[0]["value"]
+                                                                                    value = "",
+                                                                                    placeholder = "Variable"
                                                                                 )
                                                                             ],
                                                                             width = 6
@@ -93,7 +94,8 @@ def content_page_table(
                                                                                 dbc.Select(
                                                                                     id = "table_filter_num_operation",
                                                                                     options = filter_operations_poss,
-                                                                                    value = filter_operations_poss[0]["value"]
+                                                                                    value = "",
+                                                                                    placeholder = "Operation"
                                                                                 )
                                                                             ],
                                                                             width = 3
@@ -103,7 +105,8 @@ def content_page_table(
                                                                                 dbc.Input(
                                                                                     id = "table_filter_num_var_value",
                                                                                     type = "number",
-                                                                                    value = 0
+                                                                                    value = "",
+                                                                                    placeholder = "Value"
                                                                                 )
                                                                             ],
                                                                             width = 3
