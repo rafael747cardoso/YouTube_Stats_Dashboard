@@ -645,13 +645,172 @@ def content_page_plots(
                             ],
                             label = "Bubble",
                             class_name = "tab-plot"
-                        )
+                        ),
                         
                         ### Scatter to compare 2 channels
-                        
-                        
-                        
-                        
+
+                        dbc.Tab(
+                            [
+                                dbc.Row(
+                                    [
+                                        dbc.Col(
+                                            [
+                                                dbc.Card(
+                                                    [
+                                                        # Filters:
+                                                        dbc.Row(
+                                                            [
+                                                                # Channel:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Channel 1",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_scatter_2channels_chosen_channel_1",
+                                                                                            options = opts_channel,
+                                                                                            value = opts_channel[0]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # X variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Channel 2",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_scatter_2channels_chosen_channel_2",
+                                                                                            options = opts_channel,
+                                                                                            value = opts_channel[1]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # Y variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "X Variable",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_scatter_2channels_chosen_xvar",
+                                                                                            options = vars_poss_filter_num,
+                                                                                            value = vars_poss_filter_num[0]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                ),
+                                                                # Y variable:
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Row(
+                                                                            [
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        html.Div(
+                                                                                            "Y Variable",
+                                                                                            className = "filter-title"
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                ),
+                                                                                dbc.Col(
+                                                                                    [
+                                                                                        dbc.Select(
+                                                                                            id = "plot_scatter_2channels_chosen_yvar",
+                                                                                            options = vars_poss_filter_num,
+                                                                                            value = vars_poss_filter_num[1]["value"]
+                                                                                        )
+                                                                                    ],
+                                                                                    width = 12
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    width = 3
+                                                                )
+                                                            ]
+                                                        ),
+                                                        # Plot:
+                                                        dbc.Row(
+                                                            [
+                                                                dbc.Col(
+                                                                    [
+                                                                        dbc.Spinner(
+                                                                            [
+                                                                                dcc.Graph(
+                                                                                    id = "plot_scatter_2channels",
+                                                                                    figure = {}
+                                                                                )
+                                                                            ],
+                                                                            color = "#a00710",
+                                                                            type = "border",
+                                                                            size = "md"
+                                                                        )
+                                                                    ],
+                                                                    width = 12
+                                                                )
+                                                            ],
+                                                            class_name = "plot-row"
+                                                        )
+                                                    ],
+                                                    class_name = "card-container"
+                                                )
+                                            ]
+                                        )
+                                    ]
+                                )
+                            ],
+                            label = "Scatter 2 channels",
+                            class_name = "tab-plot"
+                        )                        
                     ],
                     class_name = "tabs-row-plots"
                 )

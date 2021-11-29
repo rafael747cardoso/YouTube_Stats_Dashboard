@@ -7,7 +7,7 @@ path_data = "data/"
 path_assets = "assets/"
 path_figs = "figs/"
 
-# External modules:
+# Modules:
 import numpy as np
 import pandas as pd
 import datatable as dt
@@ -20,8 +20,6 @@ from dash import Dash, dcc, html, dash_table, Input, Output, State
 import dash_bootstrap_components as dbc
 import base64
 from scipy.stats import skew
-
-# Internal modules:
 from funcs.content_page_home import content_page_home
 from funcs.content_page_table import content_page_table
 from funcs.content_page_plots import content_page_plots
@@ -31,12 +29,12 @@ from funcs.make_corr_matrix_plot import make_corr_matrix_plot
 from funcs.make_1d_histogram import make_1d_histogram
 from funcs.make_2d_density import make_2d_density
 from funcs.make_bubble import make_bubble
+from funcs.make_scatter_2channels import make_scatter_2channels
 
 # Display options:
 pd.set_option("display.width", 1200)
 pd.set_option("display.max_columns", 300)
 pd.set_option("display.max_rows", 300)
-
 
 #----------------------------------------------------------------------------------------------------------------------
 #################################################### Data #############################################################
@@ -97,9 +95,6 @@ opts_channel = [{"label": i, "value": i} for i in channels]
 vars_names = dict([(i["value"], i["label"]) for i in vars_poss_filter_num])
 vars_names_inv = dict([(i["label"], i["value"]) for i in vars_poss_filter_num])
 
-
-
-
 #----------------------------------------------------------------------------------------------------------------------
 ################################################# Initialize ##########################################################
 
@@ -146,7 +141,6 @@ def update_datatable(n_clicks,
 
 ### Correlation Matrix
 
-# Plot:
 @app.callback(
     Output(component_id = "plot_corr_matrix", component_property = "figure"),
     [
@@ -238,7 +232,6 @@ def update_1d_histogram(plot_1d_histogram_chosen_channel,
 
 ### 2D Density
 
-# Plot:
 @app.callback(
     Output(component_id = "plot_2d_density", component_property = "figure"),
     [
@@ -258,7 +251,6 @@ def update_2d_density(plot_2d_density_chosen_channel,
 
 ### Bubble with colors
 
-# Plot:
 @app.callback(
     Output(component_id = "plot_bubble", component_property = "figure"),
     [
@@ -284,14 +276,25 @@ def update_bubble(plot_bubble_chosen_channel,
 
 ### Scatter to compare 2 channels
 
-
-
-
-
-
-
-
-
+@app.callback(
+    Output(component_id = "plot_scatter_2channels", component_property = "figure"),
+    [
+        Input(component_id = "plot_scatter_2channels_chosen_channel_1", component_property = "value"),
+        Input(component_id = "plot_scatter_2channels_chosen_channel_2", component_property = "value"),
+        Input(component_id = "plot_scatter_2channels_chosen_xvar", component_property = "value"),
+        Input(component_id = "plot_scatter_2channels_chosen_yvar", component_property = "value")
+    ]
+)
+def update_scatter_2channels(plot_scatter_2channels_chosen_channel_1,
+                             plot_scatter_2channels_chosen_channel_2,
+                             plot_scatter_2channels_chosen_xvar,
+                             plot_scatter_2channels_chosen_yvar):
+    return(make_scatter_2channels(df_data = df_videos, 
+                                  chosen_channel_1 = plot_scatter_2channels_chosen_channel_1,
+                                  chosen_channel_2 = plot_scatter_2channels_chosen_channel_2,
+                                  chosen_xvar = plot_scatter_2channels_chosen_xvar,
+                                  chosen_yvar = plot_scatter_2channels_chosen_yvar,
+                                  vars_names = vars_names))
 
 #----------------------------------------------------------------------------------------------------------------------
 ################################################## Frontend ###########################################################
@@ -432,11 +435,6 @@ def render_page_content(pathname):
                                   filter_operations_poss = filter_operations_poss,
                                   df_data = df_videos,
                                   opts_channel = opts_channel)
-
-
-
-
-
 
 
 #----------------------------------------------------------------------------------------------------------------------
