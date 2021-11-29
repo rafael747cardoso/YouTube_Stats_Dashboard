@@ -1,6 +1,8 @@
 
 # YouTube Interactive Exploratory Data Analysis
 
+https://youtube-stats-dashboard.herokuapp.com/
+
 This is a Python Dash version of my notebook on a sample of 207 channels with 150.899 videos from the YouTube Data API v3.
 I've decided to create it after realizing that notebooks using ipywidgets don't go well with cloud hosting like Google Colab or Kaggle.
 
