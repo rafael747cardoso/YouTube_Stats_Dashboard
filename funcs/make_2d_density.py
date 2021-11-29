@@ -31,7 +31,7 @@ def make_2d_density(
     y_vals = df[chosen_yvar]
     
     # Palette:
-    my_colors = ["#000000", "#E008F8", "#F81D08", "#F88A08", "#F7FE04"]
+    my_colors = ["#770484", "#E008F8", "#F81D08", "#F88A08", "#F7FE04"]
 
     # Plot:
     fig = go.Figure(

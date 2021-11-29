@@ -42,9 +42,10 @@ pd.set_option("display.max_rows", 300)
 # Read the data:
 df_videos = dt.fread(path_data + "videos_data.csv", sep = ";").to_pandas()
 
-df_videos = df_videos[(df_videos["channel_title"] == "Mustard") |
-                      (df_videos["channel_title"] == "Steve Cutts") |
-                      (df_videos["channel_title"] == "Astrum")]
+# Test sample:
+# df_videos = df_videos[(df_videos["channel_title"] == "Mustard") |
+#                       (df_videos["channel_title"] == "Steve Cutts") |
+#                       (df_videos["channel_title"] == "Astrum")]
 
 # Selects options:
 vars_poss_filter_num = [

@@ -26,7 +26,7 @@ def make_corr_matrix_plot(
 
     # Palette:
     n_colors = 100
-    my_colors = ["#000000", "#E008F8", "#F81D08", "#F88A08", "#F7FE04"]
+    my_colors = ["#770484", "#E008F8", "#F81D08", "#F88A08", "#F7FE04"]
     cmap = LinearSegmentedColormap.from_list("my_palette", my_colors)
     my_palette = [to_hex(j) for j in [cmap(i / n_colors) for i in np.array(range(n_colors))]]
 
