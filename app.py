@@ -441,12 +441,9 @@ def render_page_content(pathname):
 #----------------------------------------------------------------------------------------------------------------------
 ############################################## Run the dashboard ######################################################
 
-run_vers = "dev"
-# run_vers = "production"
+# app.run_server(debug = True)
 
-if run_vers == "dev":
+if __name__ == "__main__":
     app.run_server(debug = True)
-if run_vers == "production":
-    if __name__ == "__main__":
-        app.run_server(debug = True)
+
 
