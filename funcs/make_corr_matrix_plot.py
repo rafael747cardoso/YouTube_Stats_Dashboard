@@ -91,7 +91,7 @@ def make_corr_matrix_plot(
             margin = {
                 "l": 20,
                 "r": 20,
-                "t": 50,
+                "t": 20,
                 "b": 20
             },
             showlegend = False,
